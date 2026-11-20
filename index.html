@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدليل التفاعلي لدالة المعدل AVERAGE في Excel 2013 - تحضير الامتحان العملي</title>
+    <!-- استدعاء خط Cairo من Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'Tajawal', 'Segoe UI', 'Tahoma', 'sans-serif'],
+                    },
+                    colors: {
+                        excel: {
+                            DEFAULT: '#10b981', // أخضر زمردي مشرق للوضع الداكن
+                            brand: '#217346',   // أخضر إكسل الرسمي
+                            dark: '#065f46',
+                            deep: '#064e3b',
+                        },
+                        tech: {
+                            DEFAULT: '#38bdf8',
+                            blue: '#0284c7',
+                        },
+                        surface: {
+                            bg: '#0b1120',
+                            card: '#111827',
+                            elevated: '#1e293b',
+                            border: '#273449',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* إعدادات عامة وتثبيت الخط العربي والوضع الداكن */
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+            background-color: #0b1120;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* خلفية شبكية تقنية مستوحاة من أوراق إكسل */
+        .hero-grid-bg {
+            background-color: #0b1120;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.16), transparent 45%),
+                radial-gradient(circle at 80% 10%, rgba(56, 189, 248, 0.14), transparent 40%),
+                linear-gradient(to right, rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 34px 26px, 34px 26px;
+        }
+
+        /* شارات المعادلات والمصطلحات الإنجليزية لمنع انقلاب الأقواس في RTL */
+        .formula-pill {
+            display: inline-block;
+            direction: ltr;
+            unicode-bidi: isolate;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: 700;
+            background-color: rgba(16, 185, 129, 0.14);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            padding: 0.1rem 0.55rem;
+            border-radius: 0.5rem;
+            font-size: 0.94em;
+            vertical-align: middle;
+        }
+        .formula-pill-red {
+            display: inline-block;
+            direction: ltr;
+            unicode-bidi: isolate;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: 700;
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            padding: 0.1rem 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.94em;
+            vertical-align: middle;
+        }
+        .formula-pill-blue {
+            display: inline-block;
+            direction: ltr;
+            unicode-bidi: isolate;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: 700;
+            background-color: rgba(56, 189, 248, 0.14);
+            color: #7dd3fc;
+            border: 1px solid rgba(56, 189, 248, 0.38);
+            padding: 0.1rem 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.94em;
+            vertical-align: middle;
+        }
+        .ltr-inline {
+            display: inline-block;
+            direction: ltr;
+            unicode-bidi: isolate;
+        }
+
+        /* شارات أزرار الكيبورد المضمنة داخل النصوص */
+        .kbd-inline {
+            display: inline-block;
+            direction: ltr;
+            unicode-bidi: isolate;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-bottom: 3px solid #0f172a;
+            border-radius: 0.4rem;
+            padding: 0.06rem 0.45rem;
+            font-family: 'Consolas', monospace;
+            font-weight: 800;
+            font-size: 0.86em;
+            color: #f8fafc;
+            margin: 0 2px;
+        }
+
+        /* مفاتيح لوحة المفاتيح التفاعلية 3D للوضع الداكن */
+        .kbd-key {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+            border-bottom: 4px solid #020617;
+            border-radius: 0.55rem;
+            color: #e2e8f0;
+            font-weight: 700;
+            user-select: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .kbd-key:hover {
+            border-color: #475569;
+        }
+        .kbd-key.key-active {
+            background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+            color: #ffffff !important;
+            border-color: #34d399;
+            border-bottom: 4px solid #064e3b;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35), 0 8px 20px rgba(16, 185, 129, 0.45);
+            transform: translateY(-3px) scale(1.05);
+            z-index: 10;
+        }
+        .kbd-key.key-active .key-sub {
+            color: #d1fae5 !important;
+        }
+        .kbd-key.key-modifier-active {
+            background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff !important;
+            border-color: #38bdf8;
+            border-bottom: 4px solid #0c4a6e;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.35), 0 8px 20px rgba(2, 132, 199, 0.45);
+            transform: translateY(-3px) scale(1.05);
+            z-index: 10;
+        }
+
+        /* تنسيقات محاكي Excel 2013 الداكن الأنيق */
+        .excel-table {
+            border-collapse: collapse;
+            width: 100%;
+            direction: ltr;
+            table-layout: fixed;
+        }
+        .excel-table th {
+            background-color: #1e293b;
+            color: #94a3b8;
+            font-weight: 800;
+            font-size: 0.82rem;
+            border: 1px solid #334155;
+            padding: 7px 4px;
+            text-align: center;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+        .excel-table th.col-active,
+        .excel-table th.row-active {
+            background-color: rgba(16, 185, 129, 0.25);
+            color: #34d399;
+            border-color: #10b981;
+        }
+        .excel-table td {
+            border: 1px solid #2d3b52;
+            height: 42px;
+            padding: 0;
+            background-color: #0f172a;
+            position: relative;
+            transition: background-color 0.15s ease;
+        }
+        .excel-cell-input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            text-align: center;
+            font-family: 'Consolas', 'Cairo', monospace;
+            font-size: 0.95rem;
+            font-weight: 700;
+            background: transparent;
+            color: #f1f5f9;
+            padding: 2px 4px;
+            direction: ltr;
+        }
+        .excel-cell-input::placeholder {
+            color: #64748b;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.72rem;
+        }
+        .excel-cell-selected {
+            outline: 2.5px solid #10b981 !important;
+            outline-offset: -2px;
+            z-index: 5;
+            background-color: rgba(16, 185, 129, 0.13) !important;
+        }
+        .excel-cell-target-hint {
+            background-color: rgba(245, 158, 11, 0.08) !important;
+        }
+        .excel-cell-error {
+            background-color: rgba(239, 68, 68, 0.15) !important;
+        }
+        .excel-cell-error .excel-cell-input {
+            color: #f87171 !important;
+        }
+        /* إطار متقطع متحرك (Marching Ants) للخلايا المشمولة بالمدى */
+        .excel-cell-range {
+            background-color: rgba(56, 189, 248, 0.16) !important;
+            outline: 2px dashed #38bdf8 !important;
+            outline-offset: -2px;
+            animation: marchingPulse 1.1s infinite ease-in-out;
+            z-index: 4;
+        }
+        @keyframes marchingPulse {
+            0%, 100% {
+                background-color: rgba(56, 189, 248, 0.14);
+                outline-color: #38bdf8;
+            }
+            50% {
+                background-color: rgba(56, 189, 248, 0.28);
+                outline-color: #7dd3fc;
+            }
+        }
+        .fill-handle {
+            position: absolute;
+            right: -3px;
+            bottom: -3px;
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border: 1.5px solid #0b1120;
+            z-index: 12;
+            pointer-events: none;
+        }
+
+        /* إخفاء شريط التمرير الأفقي في شريط التنقل */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* حركة لطيفة للاحتفال عند حل التمرين */
+        @keyframes popSuccess {
+            0% { transform: scale(0.96); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        .animate-pop {
+            animation: popSuccess 0.35s ease-out;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
+
+    <!-- ==================== 1. شريط التنقل العلوي الثابت (Sticky Navbar) ==================== -->
+    <nav class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800 shadow-lg">
+        <div class="max-w-6xl mx-auto px-3 sm:px-5 py-2.5 flex items-center justify-between gap-3">
+            <!-- الشعار المصغر -->
+            <a href="#top" class="flex items-center gap-2 shrink-0 group">
+                <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-700 text-white font-black text-base flex items-center justify-center shadow-md shadow-emerald-900/50 group-hover:scale-105 transition">
+                    X
+                </span>
+                <div class="hidden sm:block leading-tight">
+                    <span class="block text-xs font-black text-white">Excel 2013</span>
+                    <span class="block text-[10px] font-bold text-emerald-400">دالة AVERAGE</span>
+                </div>
+            </a>
+
+            <!-- روابط التنقل السلس بين الأقسام -->
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar text-xs font-bold py-0.5">
+                <a href="#golden-rule" class="shrink-0 px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-emerald-600 text-slate-200 hover:text-white transition">القاعدة الذهبية</a>
+                <a href="#autosum-method" class="shrink-0 px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-emerald-600 text-slate-200 hover:text-white transition">الطريقة التلقائية</a>
+                <a href="#fx-method" class="shrink-0 px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-sky-600 text-slate-200 hover:text-white transition">طريقة fx</a>
+                <a href="#keyboard-method" class="shrink-0 px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-emerald-600 text-slate-200 hover:text-white transition">الكيبورد اليدوي</a>
+                <a href="#simulator-section" class="shrink-0 px-3 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 transition">محاكي Excel 2013</a>
+                <a href="#qa-section" class="shrink-0 px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-emerald-600 text-slate-200 hover:text-white transition">أسئلة وأجوبة</a>
+            </div>
+
+            <!-- زر تشغيل / كتم المؤثرات الصوتية (Web Audio API) -->
+            <button type="button" id="sound-toggle-btn" onclick="toggleSound()"
+                title="تشغيل أو كتم المؤثرات الصوتية الخفيفة"
+                class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-emerald-400 transition">
+                <span id="sound-icon" class="text-sm">🔊</span>
+                <span id="sound-label" class="hidden md:inline">الصوت: مفعل</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ==================== ترويسة الصفحة (Hero Header) ==================== -->
+    <header id="top" class="hero-grid-bg border-b border-slate-800/80">
+        <div class="max-w-6xl mx-auto px-4 py-9 sm:py-12">
+            <div class="flex flex-wrap items-center gap-2.5 mb-4">
+                <span class="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs sm:text-sm font-bold px-3.5 py-1 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Microsoft Office Excel 2013 • قسم الاقتصاد (محاضرة 3 و 4)
+                </span>
+                <span class="inline-flex items-center gap-1.5 bg-sky-500/15 border border-sky-500/30 text-sky-300 text-xs font-bold px-3 py-1 rounded-full">
+                    🎯 تحضير الامتحان العملي
+                </span>
+            </div>
+
+            <h1 class="text-2xl sm:text-4xl lg:text-[2.6rem] font-black text-white leading-snug mb-3">
+                الدليل التفاعلي لدالة المعدل <span class="ltr-inline text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-0.5 rounded-2xl">AVERAGE</span> في Excel 2013
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed mb-6">
+                مرجعك العملي الكامل لإتقان حساب المعدل (المتوسط الحسابي) بالطرق الثلاث المعتمدة في المنهج: الطريقة التلقائية <span class="ltr-inline font-bold text-emerald-300">AutoSum → Average</span>، وطريقة أيقونة الدالة <span class="ltr-inline font-bold text-sky-300">fx (Insert Function)</span>، والطريقة اليدوية بكيبورد الحاسبة — مع محاكي تفاعلي حقيقي واختبارات عملية.
+            </p>
+
+            <!-- إحصائيات سريعة للأقسام -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center gap-2.5">
+                    <span class="text-xl">⚡</span>
+                    <div>
+                        <div class="text-xs font-black text-white">3 طرق كاملة</div>
+                        <div class="text-[11px] text-slate-400">تلقائية • fx • يدوية</div>
+                    </div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center gap-2.5">
+                    <span class="text-xl">⌨️</span>
+                    <div>
+                        <div class="text-xs font-black text-white">كيبورد ثنائي اللغة</div>
+                        <div class="text-[11px] text-slate-400">توضيح عربي/إنجليزي</div>
+                    </div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center gap-2.5">
+                    <span class="text-xl">💻</span>
+                    <div>
+                        <div class="text-xs font-black text-white">محاكي Excel 2013</div>
+                        <div class="text-[11px] text-slate-400">4 تمارين + نافذة fx</div>
+                    </div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center gap-2.5">
+                    <span class="text-xl">📝</span>
+                    <div>
+                        <div class="text-xs font-black text-white">5 أسئلة امتحان</div>
+                        <div class="text-[11px] text-slate-400">بحلول نموذجية كاملة</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-10">
+
+        <!-- ==================== 2. القاعدة الذهبية + بطاقة التنبيه الإملائي ==================== -->
+        <section id="golden-rule" class="grid grid-cols-1 lg:grid-cols-12 gap-5 scroll-mt-20">
+            <!-- القاعدة الذهبية -->
+            <div class="lg:col-span-6 bg-gradient-to-br from-amber-500/15 via-slate-900 to-slate-900 border-2 border-amber-500/40 rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 shrink-0 rounded-2xl bg-amber-500/20 border border-amber-400/40 text-amber-300 flex items-center justify-center text-2xl">
+                        💡
+                    </div>
+                    <div class="space-y-2">
+                        <span class="text-xs font-extrabold text-amber-400 tracking-wide">ملاحظة مهمة جداً من المنهج</span>
+                        <h2 class="text-lg sm:text-xl font-black text-white">القاعدة الذهبية في Excel 2013</h2>
+                        <p class="text-sm text-slate-200 leading-relaxed">
+                            برنامج <span class="ltr-inline font-bold text-emerald-400">Excel 2013</span> <strong>لا يتعامل مع الأرقام المباشرة</strong> (مثل <span class="formula-pill-red">10+20</span>)، بل يتعامل دائماً مع <strong>أسماء الخلايا</strong> (مثل <span class="formula-pill">A1:A5</span>).
+                        </p>
+                        <div class="bg-slate-950/70 border border-amber-500/30 rounded-xl p-3 text-xs sm:text-sm text-amber-100 font-semibold leading-relaxed">
+                            ✅ كل معادلة تكتبها يدوياً <strong>يجب أن تبدأ بعلامة اليساوي</strong> <span class="formula-pill">=</span>، وإلا سيعتبرها البرنامج نصاً عادياً ولن يحسب المعدل!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بطاقة التنبيه الإملائي المهم جداً -->
+            <div class="lg:col-span-6 bg-gradient-to-br from-rose-500/15 via-slate-900 to-slate-900 border-2 border-rose-500/45 rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 shrink-0 rounded-2xl bg-rose-500/20 border border-rose-400/40 text-rose-300 flex items-center justify-center text-2xl">
+                        ⚠️
+                    </div>
+                    <div class="space-y-2.5 flex-1">
+                        <span class="text-xs font-extrabold text-rose-400 tracking-wide">انتبه! أشهر خطأ يفقدك الدرجة في العملي</span>
+                        <h2 class="text-lg sm:text-xl font-black text-white">تنبيه إملائي مهم: كيف تُكتب الدالة؟</h2>
+                        <p class="text-sm text-slate-200 leading-relaxed">
+                            الاسم الصحيح لدالة المعدل هو <span class="formula-pill">AVERAGE</span> وليس <span class="formula-pill-red line-through">Avarge</span> أو <span class="formula-pill-red line-through">Avrage</span>! إذا كتبت حرفاً واحداً خطأ سيعرض Excel رسالة الخطأ <span class="formula-pill-red">#NAME?</span>.
+                        </p>
+
+                        <!-- تقسيم بصري لحفظ الكلمة بسهولة -->
+                        <div class="bg-slate-950/80 border border-slate-700 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3">
+                            <div class="text-xs font-bold text-slate-300">طريقة ذكية لحفظ الإملاء:</div>
+                            <div class="flex items-center gap-2 font-mono text-lg sm:text-xl font-black" dir="ltr">
+                                <span class="px-3 py-1 rounded-xl bg-emerald-500/20 border border-emerald-400/50 text-emerald-300">AVE</span>
+                                <span class="text-slate-500">-</span>
+                                <span class="px-3 py-1 rounded-xl bg-sky-500/20 border border-sky-400/50 text-sky-300">RAGE</span>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-sky-300 font-bold leading-relaxed">
+                            🚀 <strong>تلميح ذهبي في المختبر:</strong> بمجرد كتابة <span class="formula-pill">=AV</span> ستظهر لك قائمة الإكمال التلقائي في Excel وبها <span class="ltr-inline font-mono font-bold text-white">AVERAGE</span>؛ اضغط مفتاح <span class="kbd-inline">Tab</span> وسيكملها البرنامج تلقائياً ويفتح القوس بدون أي خطأ إملائي!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 3. الطريقة الأولى: الطريقة السهلة التلقائية (AutoSum -> Average) ==================== -->
+        <section id="autosum-method" class="bg-slate-900/90 border border-slate-800 rounded-3xl shadow-xl overflow-hidden scroll-mt-20">
+            <div class="bg-gradient-to-l from-emerald-900/80 via-emerald-800/60 to-slate-900 border-b border-emerald-500/30 px-6 py-4 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="w-11 h-11 rounded-2xl bg-emerald-500 text-slate-950 font-black text-2xl flex items-center justify-center shadow-lg shadow-emerald-900/50">Σ</span>
+                    <div>
+                        <span class="text-xs font-bold text-emerald-300 block">الطريقة الأولى • الأسرع والأسهل في الامتحان</span>
+                        <h2 class="text-xl sm:text-2xl font-black text-white">الطريقة السهلة التلقائية (<span class="ltr-inline text-emerald-300">AutoSum → Average</span>)</h2>
+                    </div>
+                </div>
+                <span class="formula-pill text-xs sm:text-sm">Home → Editing → Σ AutoSum ▾ → Average</span>
+            </div>
+
+            <div class="p-5 sm:p-7 space-y-6">
+                <!-- شريط المسار وشريط الصيغة المصغر -->
+                <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4 flex flex-col lg:flex-row items-center justify-between gap-4">
+                    <div class="space-y-1.5 text-center lg:text-right">
+                        <div class="text-xs font-bold text-slate-400">مسار الأداة في شريط أدوات Excel 2013:</div>
+                        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-1.5 text-xs sm:text-sm font-bold">
+                            <span class="bg-slate-800 border border-slate-700 px-3 py-1 rounded-xl text-emerald-300">تبويب Home (الصفحة الرئيسية)</span>
+                            <span class="text-slate-500">←</span>
+                            <span class="bg-slate-800 border border-slate-700 px-3 py-1 rounded-xl text-slate-200">مجموعة Editing (تحرير)</span>
+                            <span class="text-slate-500">←</span>
+                            <span class="bg-emerald-600 text-white px-3 py-1 rounded-xl shadow">السهم بجانب Σ AutoSum ▾</span>
+                            <span class="text-slate-500">←</span>
+                            <span class="bg-sky-600 text-white px-3 py-1 rounded-xl shadow">Average</span>
+                        </div>
+                        <p class="text-xs text-slate-400 pt-0.5">
+                            أو من تبويب الصيغ <span class="ltr-inline text-sky-300 font-bold">Formulas</span> ← مكتبة الدوال <span class="ltr-inline text-slate-300 font-bold">Function Library</span> ← السهم الصغير بجانب <span class="ltr-inline text-emerald-300 font-bold">Σ AutoSum ▾</span> ← <span class="ltr-inline text-white font-bold">Average</span>.
+                        </p>
+                    </div>
+
+                    <!-- محاكاة مصغرة لشريط الصيغة -->
+                    <div class="shrink-0 bg-slate-900 border border-slate-700 rounded-xl p-2 flex items-center gap-2 text-xs font-mono shadow-inner" dir="ltr">
+                        <span class="px-2.5 py-1 bg-slate-800 border border-slate-700 rounded text-slate-200 font-bold">A6</span>
+                        <span class="text-rose-400 font-black px-1">✗</span>
+                        <span class="text-emerald-400 font-black px-1">✓</span>
+                        <span class="italic font-serif text-sky-400 font-bold px-1">fx</span>
+                        <span class="px-3 py-1 bg-emerald-500/15 border border-emerald-500/40 rounded text-emerald-300 font-bold">=AVERAGE(A1:A5)</span>
+                    </div>
+                </div>
+
+                <!-- 5 خطوات مرقمة مع أيقونات بصرية -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+                    <div class="bg-slate-950/60 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-4 transition group">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black text-sm flex items-center justify-center">1</span>
+                            <span class="text-xl group-hover:scale-110 transition">🔢</span>
+                        </div>
+                        <h3 class="font-extrabold text-white text-sm mb-1.5">إدخال الأرقام</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            ندخل الأرقام في الخلايا المطلوبة، مثلاً في الخلايا من <span class="formula-pill">A1</span> إلى <span class="formula-pill">A5</span> (مثل: 10، 20، 30، 40، 50).
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-950/60 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-4 transition group">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black text-sm flex items-center justify-center">2</span>
+                            <span class="text-xl group-hover:scale-110 transition">🖱️</span>
+                        </div>
+                        <h3 class="font-extrabold text-white text-sm mb-1.5">تحديد الخلية النشطة</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            نحدد الخلية التي نريد ظهور الناتج فيها (مثلاً <span class="formula-pill">A6</span>) بنقرة واحدة <strong>بزر الماوس الأيسر</strong> لتصبح خلية نشطة.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-950/60 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-4 transition group">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black text-sm flex items-center justify-center">3</span>
+                            <span class="text-xl group-hover:scale-110 transition">🔽</span>
+                        </div>
+                        <h3 class="font-extrabold text-white text-sm mb-1.5">اختيار Average</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            من تبويب <span class="ltr-inline font-bold text-white">Home</span> ← مجموعة <span class="ltr-inline font-bold text-white">Editing</span> (أو <span class="ltr-inline font-bold text-sky-300">Formulas</span>) نضغط على السهم الصغير بجانب <span class="ltr-inline font-bold text-emerald-300">Σ AutoSum ▾</span> ونختار <span class="ltr-inline font-bold text-white">Average</span>.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-950/60 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-4 transition group">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black text-sm flex items-center justify-center">4</span>
+                            <span class="text-xl group-hover:scale-110 transition">✨</span>
+                        </div>
+                        <h3 class="font-extrabold text-white text-sm mb-1.5">ظهور المعادلة تلقائياً</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            تظهر المعادلة تلقائياً <span class="formula-pill">=AVERAGE(A1:A5)</span> في شريط الصيغة والخلية النشطة مع علامتي (<strong class="text-emerald-400">✓ صح</strong>) و (<strong class="text-rose-400">✗ خطأ</strong>).
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-950/60 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-4 transition group">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black text-sm flex items-center justify-center">5</span>
+                            <span class="text-xl group-hover:scale-110 transition">✅</span>
+                        </div>
+                        <h3 class="font-extrabold text-white text-sm mb-1.5">التنفيذ وإظهار الناتج</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            نضغط على علامة الصح (<strong class="text-emerald-400">✓</strong>) في شريط الصيغة أو مفتاح <span class="kbd-inline">Enter</span> ليظهر الناتج (<strong class="text-emerald-400">30</strong>). وللإلغاء نضغط علامة (<strong class="text-rose-400">✗</strong>).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 4. الطريقة الثانية: طريقة أيقونة الدالة fx (Insert Function) ==================== -->
+        <section id="fx-method" class="bg-slate-900/90 border border-slate-800 rounded-3xl shadow-xl overflow-hidden scroll-mt-20">
+            <div class="bg-gradient-to-l from-sky-900/80 via-sky-800/50 to-slate-900 border-b border-sky-500/30 px-6 py-4 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="w-11 h-11 rounded-2xl bg-sky-500 text-slate-950 font-serif italic font-black text-2xl flex items-center justify-center shadow-lg shadow-sky-900/50">fx</span>
+                    <div>
+                        <span class="text-xs font-bold text-sky-300 block">الطريقة الثانية • من تبويب Formulas (مطابقة لمنهج المحاضرة 4)</span>
+                        <h2 class="text-xl sm:text-2xl font-black text-white">طريقة أيقونة الدالة <span class="ltr-inline text-sky-300">fx (Insert Function)</span></h2>
+                    </div>
+                </div>
+                <span class="formula-pill-blue text-xs sm:text-sm">Formulas → Insert Function (fx)</span>
+            </div>
+
+            <div class="p-5 sm:p-7 space-y-6">
+                <!-- 7 خطوات عملية واضحة -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-slate-950/65 border border-slate-800 rounded-2xl p-4 flex gap-3.5 items-start">
+                        <span class="w-8 h-8 shrink-0 rounded-full bg-sky-500 text-slate-950 font-black text-sm flex items-center justify-center">1</span>
+                        <div>
+                            <h3 class="font-extrabold text-white text-sm mb-1">تحديد الخلية والنقر على fx</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                نحدد الخلية النشطة المراد وضع الناتج فيها، ثم ننقر <strong>بالزر الأيسر للماوس</strong> على أيقونة الدالة <span class="formula-pill-blue">fx (Insert Function)</span> من تبويب <span class="ltr-inline font-bold text-white">Formulas</span> أو بجانب شريط الصيغة.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950/65 border border-slate-800 rounded-2xl p-4 flex gap-3.5 items-start">
+                        <span class="w-8 h-8 shrink-0 rounded-full bg-sky-500 text-slate-950 font-black text-sm flex items-center justify-center">2</span>
+                        <div>
+                            <h3 class="font-extrabold text-white text-sm mb-1">ظهور مربع حوار Insert Function</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                ستظهر نافذة حوار بعنوان <span class="ltr-inline font-bold text-sky-300">Insert Function</span> تحتوي على أكثر من 300 دالة رياضية وإحصائية.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950/65 border border-slate-800 rounded-2xl p-4 flex gap-3.5 items-start">
+                        <span class="w-8 h-8 shrink-0 rounded-full bg-sky-500 text-slate-950 font-black text-sm flex items-center justify-center">3</span>
+                        <div>
+                            <h3 class="font-extrabold text-white text-sm mb-1">اختيار تصنيف الدالة (Category)</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                نختار تصنيف الدالة (<span class="ltr-inline text-slate-200 font-bold">Function Category</span>) مثل <span class="formula-pill-blue">Most Recently Used</span> أو <span class="formula-pill-blue">Statistical</span> (أو <span class="formula-pill-blue">All</span>).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950/65 border border-slate-800 rounded-2xl p-4 flex gap-3.5 items-start">
+                        <span class="w-8 h-8 shrink-0 rounded-full bg-sky-500 text-slate-950 font-black text-sm flex items-center justify-center">4</span>
+                        <div>
+                            <h3 class="font-extrabold text-white text-sm mb-1">اختيار الدالة AVERAGE</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                من قائمة الدوال (<span class="ltr-inline text-slate-200 font-bold">Select a function</span>) نبحث عن اسم الدالة <span class="formula-pill">AVERAGE</span> وننقر عليها لتظليلها.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950/65 border border-slate-800 rounded-2xl p-4 flex gap-3.5 items-start">
+                        <span class="w-8 h-8 shrink-0 rounded-full bg-sky-500 text-slate-950 font-black text-sm flex items-center justify-center">5</span>
+                        <div>
+                            <h3 class="font-extrabold text-white text-sm mb-1">الضغط على موافق (OK)</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                ننقر على زر <span class="kbd-inline bg-sky-700 border-sky-500">OK</span> أسفل مربع الحوار للانتقال إلى نافذة إدخال وسائط الدالة.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950/65 border border-slate-800 rounded-2xl p-4 flex gap-3.5 items-start">
+                        <span class="w-8 h-8 shrink-0 rounded-full bg-sky-500 text-slate-950 font-black text-sm flex items-center justify-center">6</span>
+                        <div>
+                            <h3 class="font-extrabold text-white text-sm mb-1">ظهور نافذة Function Arguments</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                تظهر نافذة <span class="ltr-inline font-bold text-sky-300">Function Arguments</span> وفيها الحقل الأول <span class="formula-pill-blue">Number1</span> لإدخال نطاق الخلايا.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- الخطوة 7 بعرض كامل لتوضيح النتيجة -->
+                    <div class="md:col-span-2 lg:col-span-3 bg-gradient-to-l from-sky-950/70 to-emerald-950/50 border border-sky-500/40 rounded-2xl p-4 flex flex-col sm:flex-row gap-3.5 items-start sm:items-center justify-between">
+                        <div class="flex gap-3.5 items-start">
+                            <span class="w-8 h-8 shrink-0 rounded-full bg-emerald-500 text-slate-950 font-black text-sm flex items-center justify-center">7</span>
+                            <div>
+                                <h3 class="font-extrabold text-white text-sm mb-1">كتابة نطاق الخلايا والتنفيذ النهائي</h3>
+                                <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                                    نكتب داخل حقل <span class="formula-pill-blue">Number1</span> اسم أول خلية ثم النقطتين <span class="formula-pill">:</span> (عبر <span class="kbd-inline">Shift + ك</span>) ثم اسم آخر خلية مثل <span class="formula-pill">A1:A6</span>، فتظهر <span class="formula-pill">=AVERAGE(A1:A6)</span> في شريط الصيغة والخلية النشطة، ثم نضغط <span class="kbd-inline bg-emerald-700 border-emerald-500">OK</span> أو علامة الصح (<strong class="text-emerald-400">✓</strong>) ليتم التنفيذ فوراً.
+                                </p>
+                            </div>
+                        </div>
+                        <a href="#simulator-section" onclick="openFxModalFromGuide()" class="shrink-0 px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold text-xs transition shadow-md">
+                            جرب نافذة fx في المحاكي ↙
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 5. الطريقة الثالثة: الطريقة اليدوية بالكيبورد التفاعلي ==================== -->
+        <section id="keyboard-method" class="bg-slate-900/90 border border-slate-800 rounded-3xl shadow-xl overflow-hidden scroll-mt-20">
+            <div class="bg-gradient-to-l from-slate-800 via-slate-900 to-slate-900 border-b border-slate-700 px-6 py-4 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-black text-2xl flex items-center justify-center">⌨️</span>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 block">الطريقة الثالثة • تعلم الكتابة خطوة بخطوة على كيبورد الحاسبة</span>
+                        <h2 class="text-xl sm:text-2xl font-black text-white">الطريقة اليدوية بالكيبورد التفاعلي</h2>
+                    </div>
+                </div>
+                <span class="formula-pill text-sm">=AVERAGE(A1:A5)</span>
+            </div>
+
+            <div class="p-5 sm:p-7 space-y-6">
+                <!-- شاشة معاينة شريط الصيغة وأزرار التحكم -->
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                        <div class="flex flex-wrap items-center gap-2.5">
+                            <span id="kb-step-badge" class="bg-emerald-500 text-slate-950 font-black text-xs px-3 py-1 rounded-full">الخطوة 1 / 9</span>
+                            <h3 id="kb-step-title" class="font-extrabold text-base sm:text-lg text-emerald-300">تحويل لغة الكيبورد إلى الإنجليزية</h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="kb-prev-btn" type="button" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-bold transition disabled:opacity-35">
+                                ◄ السابق
+                            </button>
+                            <button id="kb-autoplay-btn" type="button" class="px-3.5 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs sm:text-sm font-black transition">
+                                ▶ تشغيل تلقائي
+                            </button>
+                            <button id="kb-next-btn" type="button" class="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs sm:text-sm font-black transition">
+                                التالي ►
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+                        <div class="lg:col-span-7 space-y-1.5">
+                            <p id="kb-step-desc" class="text-slate-200 text-sm sm:text-base leading-relaxed font-semibold"></p>
+                            <div id="kb-keys-hint" class="text-xs text-sky-400 font-bold"></div>
+                        </div>
+                        <!-- شريط المعاينة الحي للمعادلة -->
+                        <div class="lg:col-span-5 bg-slate-900 border border-slate-700 rounded-xl p-3">
+                            <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 mb-1.5">
+                                <span>معاينة شريط الصيغة (Formula Bar):</span>
+                                <span id="kb-lang-pill" class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-mono">EN</span>
+                            </div>
+                            <div dir="ltr" class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 font-mono text-lg sm:text-xl font-black text-emerald-400 flex items-center justify-between min-h-[48px] overflow-x-auto">
+                                <span id="kb-formula-preview" class="tracking-wide whitespace-nowrap"></span>
+                                <span class="w-2.5 h-5 bg-emerald-400 animate-pulse shrink-0 ml-1"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- رسم لوحة المفاتيح التفاعلية QWERTY ثنائية اللغة -->
+                <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3 sm:p-5 overflow-x-auto">
+                    <div class="min-w-[650px] max-w-4xl mx-auto space-y-2 select-none" dir="ltr">
+                        <!-- صف الأرقام -->
+                        <div class="grid gap-1.5 text-center" style="grid-template-columns: repeat(14, minmax(0, 1fr));">
+                            <div class="kbd-key h-12 text-xs" data-key="1"><span class="text-[10px] text-slate-400">!</span><span class="text-sm font-black">1</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-70" data-key="2"><span class="text-[10px] text-slate-400">@</span><span>2</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-70" data-key="3"><span class="text-[10px] text-slate-400">#</span><span>3</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-70" data-key="4"><span class="text-[10px] text-slate-400">$</span><span>4</span></div>
+                            <div class="kbd-key h-12 text-xs" data-key="5"><span class="text-[10px] text-slate-400">%</span><span class="text-sm font-black">5</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-70" data-key="6"><span class="text-[10px] text-slate-400">^</span><span>6</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-70" data-key="7"><span class="text-[10px] text-slate-400">&amp;</span><span>7</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-70" data-key="8"><span class="text-[10px] text-slate-400">*</span><span>8</span></div>
+                            <div class="kbd-key h-12 text-xs" data-key="9"><span class="text-emerald-400 font-black text-sm leading-none">(</span><span class="text-xs">9</span></div>
+                            <div class="kbd-key h-12 text-xs" data-key="0"><span class="text-emerald-400 font-black text-sm leading-none">)</span><span class="text-xs">0</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-55"><span class="text-[10px]">_</span><span>-</span></div>
+                            <div class="kbd-key h-12 text-xs" data-key="="><span class="text-[10px] text-slate-400">+</span><span class="text-base font-black text-emerald-400">=</span></div>
+                            <div class="kbd-key h-12 text-[11px] col-span-2 opacity-65">⌫ Backspace</div>
+                        </div>
+
+                        <!-- صف QWERTY -->
+                        <div class="grid gap-1.5 text-center" style="grid-template-columns: 1.35fr repeat(11, 1fr);">
+                            <div class="kbd-key h-12 text-[11px] text-sky-300" data-key="Tab">Tab ↹</div>
+                            <div class="kbd-key h-12 text-xs opacity-45">Q<span class="key-sub text-[9px] text-slate-500">ض</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">W<span class="key-sub text-[9px] text-slate-500">ص</span></div>
+                            <div class="kbd-key h-12 text-sm font-black" data-key="E">E<span class="key-sub text-[10px] text-slate-400">ث</span></div>
+                            <div class="kbd-key h-12 text-sm font-black" data-key="R">R<span class="key-sub text-[10px] text-slate-400">ق</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">T<span class="key-sub text-[9px] text-slate-500">ف</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">Y<span class="key-sub text-[9px] text-slate-500">غ</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">U<span class="key-sub text-[9px] text-slate-500">ع</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">I<span class="key-sub text-[9px] text-slate-500">هـ</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">O<span class="key-sub text-[9px] text-slate-500">خ</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">P<span class="key-sub text-[9px] text-slate-500">ح</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">[ ]</div>
+                        </div>
+
+                        <!-- صف ASDF -->
+                        <div class="grid gap-1.5 text-center" style="grid-template-columns: 1.55fr repeat(10, 1fr) 1.85fr;">
+                            <div class="kbd-key h-12 text-[10px] opacity-55">Caps</div>
+                            <div class="kbd-key h-12 text-sm font-black" data-key="A">A<span class="key-sub text-[10px] text-slate-400">ش</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">S<span class="key-sub text-[9px] text-slate-500">س</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">D<span class="key-sub text-[9px] text-slate-500">ي</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">F<span class="key-sub text-[9px] text-slate-500">ب</span></div>
+                            <div class="kbd-key h-12 text-sm font-black" data-key="G">G<span class="key-sub text-[10px] text-slate-400">ل</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">H<span class="key-sub text-[9px] text-slate-500">ا</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">J<span class="key-sub text-[9px] text-slate-500">ت</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">K<span class="key-sub text-[9px] text-slate-500">ن</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">L<span class="key-sub text-[9px] text-slate-500">م</span></div>
+                            <!-- مفتاح ك و النقطتين : -->
+                            <div class="kbd-key h-12 text-xs" data-key=";">
+                                <span class="text-emerald-400 font-black text-base leading-none">:</span>
+                                <span class="key-sub text-[11px] font-bold text-slate-300">; ك</span>
+                            </div>
+                            <div class="kbd-key h-12 text-xs font-black" data-key="Enter">↵ Enter</div>
+                        </div>
+
+                        <!-- صف ZXCV -->
+                        <div class="grid gap-1.5 text-center" style="grid-template-columns: 2fr repeat(9, 1fr) 2fr;">
+                            <div class="kbd-key h-12 text-xs font-black" data-key="ShiftLeft">⇧ Shift</div>
+                            <div class="kbd-key h-12 text-xs opacity-45">Z<span class="key-sub text-[9px] text-slate-500">ئ</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">X<span class="key-sub text-[9px] text-slate-500">ء</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">C<span class="key-sub text-[9px] text-slate-500">ؤ</span></div>
+                            <div class="kbd-key h-12 text-sm font-black" data-key="V">V<span class="key-sub text-[10px] text-slate-400">ر</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">B<span class="key-sub text-[9px] text-slate-500">لا</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">N<span class="key-sub text-[9px] text-slate-500">ى</span></div>
+                            <div class="kbd-key h-12 text-xs opacity-45">M<span class="key-sub text-[9px] text-slate-500">ة</span></div>
+                            <!-- مفتاح و والفاصلة , -->
+                            <div class="kbd-key h-12 text-xs" data-key=",">
+                                <span class="text-[10px] text-slate-400">&lt;</span>
+                                <span class="key-sub text-[11px] font-bold text-sky-300">, و</span>
+                            </div>
+                            <div class="kbd-key h-12 text-xs opacity-45">. ز</div>
+                            <div class="kbd-key h-12 text-xs font-black" data-key="ShiftRight">⇧ Shift</div>
+                        </div>
+
+                        <!-- الصف السفلي -->
+                        <div class="grid gap-1.5 text-center" style="grid-template-columns: 1.4fr 1.3fr 5fr 1.3fr 1.4fr;">
+                            <div class="kbd-key h-11 text-xs opacity-75" data-key="Ctrl">Ctrl</div>
+                            <div class="kbd-key h-11 text-xs font-black" data-key="Alt">Alt</div>
+                            <div class="kbd-key h-11 text-xs opacity-50">Space (مسافة)</div>
+                            <div class="kbd-key h-11 text-xs opacity-65">Alt</div>
+                            <div class="kbd-key h-11 text-xs opacity-65">Ctrl</div>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs text-slate-400 mt-3 sm:hidden">← اسحب الكيبورد يميناً أو يساراً لرؤية كافة المفاتيح →</p>
+                </div>
+
+                <!-- أزرار الخطوات الـ 9 القابلة للنقر -->
+                <div id="kb-steps-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                    <!-- يتم تعبئتها عبر JS -->
+                </div>
+
+                <!-- جدول المقارنة لحالات دالة المعدل الأربع -->
+                <div class="pt-4 space-y-3">
+                    <h3 class="text-lg font-black text-white flex items-center gap-2">
+                        <span class="w-2.5 h-6 bg-emerald-500 rounded-full inline-block"></span>
+                        جدول مقارنة حالات دالة المعدل الأربع في الامتحان
+                    </h3>
+                    <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                        <table class="w-full text-right border-collapse min-w-[600px]">
+                            <thead>
+                                <tr class="bg-slate-800/90 text-emerald-300 text-xs sm:text-sm">
+                                    <th class="p-3.5 font-extrabold">الحالة</th>
+                                    <th class="p-3.5 font-extrabold">صيغة المعادلة الصحيحة</th>
+                                    <th class="p-3.5 font-extrabold">الشرح والملاحظات العملية</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800 text-xs sm:text-sm bg-slate-950/70">
+                                <tr class="hover:bg-slate-900 transition">
+                                    <td class="p-3.5 font-extrabold text-white">1. خلايا عمودية</td>
+                                    <td class="p-3.5"><span class="formula-pill">=AVERAGE(A1:A5)</span></td>
+                                    <td class="p-3.5 text-slate-300">الخلايا مرتبة تحت بعضها في نفس العمود، ونضع الناتج في الخلية النشطة أسفلها (<span class="formula-pill">A6</span>).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900 transition">
+                                    <td class="p-3.5 font-extrabold text-white">2. خلايا أفقية</td>
+                                    <td class="p-3.5"><span class="formula-pill">=AVERAGE(A1:C1)</span></td>
+                                    <td class="p-3.5 text-slate-300">الخلايا مرتبة بجانب بعضها في نفس الصف، ونضع الناتج في الخلية النشطة التالية (<span class="formula-pill">D1</span>).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900 transition">
+                                    <td class="p-3.5 font-extrabold text-white">3. مصفوفة (صفوف وأعمدة)</td>
+                                    <td class="p-3.5"><span class="formula-pill">=AVERAGE(A1:C5)</span></td>
+                                    <td class="p-3.5 text-slate-300">نكتب أول خلية في الزاوية العليا (<span class="formula-pill">A1</span>) ثم النقطتين (<span class="formula-pill">:</span>) ثم آخر خلية في الزاوية السفلى (<span class="formula-pill">C5</span>).</td>
+                                </tr>
+                                <tr class="bg-amber-500/5 hover:bg-amber-500/10 transition">
+                                    <td class="p-3.5 font-extrabold text-amber-300">4. خلايا مبعثرة (متفرقة)</td>
+                                    <td class="p-3.5"><span class="formula-pill">=AVERAGE(A1,B2,C3,D4,E5)</span></td>
+                                    <td class="p-3.5 text-slate-200 leading-relaxed space-y-2">
+                                        <div>
+                                            في <strong>التطبيق العملي على Excel 2013</strong> نستخدم الفاصلة <span class="formula-pill">,</span> (مفتاح حرف <strong>و</strong> بالكيبورد الإنجليزي)، أو نضغط باستمرار على مفتاح <span class="kbd-inline">Ctrl</span> وننقر بالماوس على كل خلية (<span class="ltr-inline font-bold text-sky-300">Ctrl + Click</span>).
+                                        </div>
+                                        <div class="bg-amber-500/15 border border-amber-500/35 rounded-xl p-2.5 text-xs text-amber-200 font-semibold">
+                                            📌 <strong>تنبيه مهم للدرجة الكاملة (عملي vs نظري):</strong> في ملزمة المحاضرة 4 كُتبت صيغة الخلايا المبعثرة بعلامة النقطتين <span class="ltr-inline font-mono text-white">=AVERAGE(A1:B2:C3:D4:E5)</span>، لكن عند تطبيقها <strong>عملياً</strong> على حاسبة المختبر فإن النقطتين <span class="ltr-inline font-mono">:</span> تجمع كل الخلايا الواقعة بينها كمصفوفة، لذلك على الحاسبة نستخدم الفاصلة <span class="ltr-inline font-mono text-emerald-300">,</span> (أو <span class="ltr-inline font-mono">;</span> حسب إعدادات ويندوز)، أما في الامتحان <strong>الورقي النظري</strong> فاذكر صيغة الملزمة وأضف ملاحظة الفاصلة لتضمن الدرجة الكاملة بالحالتين!
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 6. محاكي Excel 2013 التفاعلي للتدريب العملي ==================== -->
+        <section id="simulator-section" class="bg-slate-900 border-2 border-emerald-500/35 rounded-3xl shadow-2xl overflow-hidden scroll-mt-20">
+            <!-- رأس المحاكي وشريط التمارين وعداد الإنجاز -->
+            <div class="bg-gradient-to-l from-emerald-950 via-slate-900 to-slate-900 border-b border-slate-800 px-5 py-4 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <span class="w-11 h-11 rounded-2xl bg-emerald-500 text-slate-950 font-black text-2xl flex items-center justify-center shadow-lg">💻</span>
+                        <div>
+                            <span class="text-xs font-bold text-emerald-400 block">مختبر الحاسوب الافتراضي • تدرب بجميع الطرق الثلاث</span>
+                            <h2 class="text-xl sm:text-2xl font-black text-white">محاكي Excel 2013 التفاعلي لدالة AVERAGE</h2>
+                        </div>
+                    </div>
+
+                    <!-- عداد الإنجاز (0 / 4) -->
+                    <div class="flex items-center gap-3 bg-slate-950 border border-slate-700 px-4 py-2 rounded-2xl">
+                        <span class="text-xs font-bold text-slate-400">إنجاز التمارين:</span>
+                        <span id="sim-progress-counter" class="font-mono font-black text-base text-emerald-400">0 / 4</span>
+                        <div class="w-20 h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div id="sim-progress-bar" class="h-full bg-gradient-to-l from-emerald-400 to-sky-400 w-0 transition-all duration-500"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أزرار اختيار التمارين الـ 4 -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                    <button type="button" onclick="loadExercise(1)" id="ex-tab-1" class="ex-tab-btn px-3 py-2.5 rounded-xl text-xs font-extrabold border transition flex items-center justify-between gap-2">
+                        <span>1. عمودي (A1:A5)</span>
+                        <span id="ex-badge-1" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">غير محلول</span>
+                    </button>
+                    <button type="button" onclick="loadExercise(2)" id="ex-tab-2" class="ex-tab-btn px-3 py-2.5 rounded-xl text-xs font-extrabold border transition flex items-center justify-between gap-2">
+                        <span>2. أفقي (A1:C1)</span>
+                        <span id="ex-badge-2" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">غير محلول</span>
+                    </button>
+                    <button type="button" onclick="loadExercise(3)" id="ex-tab-3" class="ex-tab-btn px-3 py-2.5 rounded-xl text-xs font-extrabold border transition flex items-center justify-between gap-2">
+                        <span>3. مصفوفة (3×3)</span>
+                        <span id="ex-badge-3" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">غير محلول</span>
+                    </button>
+                    <button type="button" onclick="loadExercise(4)" id="ex-tab-4" class="ex-tab-btn px-3 py-2.5 rounded-xl text-xs font-extrabold border transition flex items-center justify-between gap-2">
+                        <span>4. خلايا مبعثرة</span>
+                        <span id="ex-badge-4" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">غير محلول</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-4 sm:p-6 space-y-4">
+                <!-- بطاقة المطلوب وأزرار عرض الحل وإعادة التمرين -->
+                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                    <div class="space-y-1">
+                        <div id="sim-task-title" class="text-xs font-extrabold text-emerald-400">التمرين 1 (معدل خلايا عمودية):</div>
+                        <p id="sim-task-desc" class="text-sm font-bold text-slate-100 leading-relaxed"></p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 shrink-0">
+                        <button type="button" onclick="showSolution()" class="px-3.5 py-2 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-500/40 text-sky-300 text-xs font-extrabold transition">
+                            💡 عرض الحل
+                        </button>
+                        <button type="button" onclick="resetCurrentExercise()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-extrabold transition">
+                            ↺ إعادة التمرين
+                        </button>
+                    </div>
+                </div>
+
+                <!-- نافذة Excel 2013 التفاعلية -->
+                <div class="border-2 border-slate-700 rounded-2xl overflow-hidden shadow-2xl bg-slate-950">
+                    <!-- شريط العنوان الأخضر لبرنامج Excel 2013 -->
+                    <div class="bg-excel-brand text-white px-4 py-2 flex items-center justify-between text-xs font-bold" dir="ltr">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-white text-excel-brand font-black px-1.5 py-0.5 rounded text-[11px]">X</span>
+                            <span>Book1 - Microsoft Office Excel 2013</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-white/80 text-xs">
+                            <span>—</span>
+                            <span>▢</span>
+                            <span>✕</span>
+                        </div>
+                    </div>
+
+                    <!-- شريط الأدوات (Ribbon) مع قائمة Σ AutoSum ▾ المنسدلة وزر fx Insert Function -->
+                    <div class="bg-slate-900 border-b border-slate-800 px-3 py-2.5 flex flex-wrap items-center justify-between gap-3 relative">
+                        <div class="flex items-center gap-2 text-xs font-extrabold">
+                            <span class="px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/40 text-emerald-300">HOME</span>
+                            <span class="px-3 py-1 rounded-lg bg-sky-500/15 border border-sky-500/40 text-sky-300">FORMULAS</span>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-2">
+                            <!-- زر fx Insert Function (يفتح النافذة المنبثقة الحقيقية) -->
+                            <button type="button" id="sim-fx-ribbon-btn" onclick="openFxModal()"
+                                class="inline-flex items-center gap-2 bg-sky-500/15 hover:bg-sky-500 text-sky-300 hover:text-slate-950 border border-sky-500/40 px-3.5 py-1.5 rounded-xl font-extrabold text-xs sm:text-sm transition shadow-sm">
+                                <span class="font-serif italic font-black text-base leading-none">fx</span>
+                                <span dir="ltr">Insert Function</span>
+                            </button>
+
+                            <!-- قائمة Σ AutoSum ▾ المنسدلة -->
+                            <div class="relative" id="autosum-dropdown-wrapper">
+                                <button type="button" id="sim-autosum-toggle" onclick="toggleAutoSumMenu()"
+                                    class="inline-flex items-center gap-2 bg-emerald-500/15 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 px-3.5 py-1.5 rounded-xl font-extrabold text-xs sm:text-sm transition shadow-sm">
+                                    <span class="text-base font-black leading-none">Σ</span>
+                                    <span dir="ltr">AutoSum ▾</span>
+                                </button>
+
+                                <!-- القائمة المنسدلة لـ AutoSum -->
+                                <div id="sim-autosum-menu" class="hidden absolute left-0 sm:right-auto mt-2 w-48 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl py-1.5 z-40 text-left font-sans" dir="ltr">
+                                    <button type="button" onclick="applyAutoSumFunction('SUM')" class="w-full px-3.5 py-2 text-xs font-bold text-slate-300 hover:bg-slate-800 hover:text-white flex items-center justify-between">
+                                        <span>Σ Sum</span>
+                                        <span class="text-[10px] text-slate-500 font-cairo">الجمع</span>
+                                    </button>
+                                    <button type="button" onclick="applyAutoSumFunction('AVERAGE')" class="w-full px-3.5 py-2 text-xs font-black text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500 hover:text-slate-950 flex items-center justify-between transition">
+                                        <span>★ Average</span>
+                                        <span class="text-[10px] font-cairo">دالة المعدل</span>
+                                    </button>
+                                    <button type="button" onclick="applyAutoSumFunction('COUNT')" class="w-full px-3.5 py-2 text-xs font-bold text-slate-300 hover:bg-slate-800 hover:text-white flex items-center justify-between">
+                                        <span>Count Numbers</span>
+                                        <span class="text-[10px] text-slate-500 font-cairo">العدد</span>
+                                    </button>
+                                    <button type="button" onclick="applyAutoSumFunction('MAX')" class="w-full px-3.5 py-2 text-xs font-bold text-slate-300 hover:bg-slate-800 hover:text-white flex items-center justify-between">
+                                        <span>Max</span>
+                                        <span class="text-[10px] text-slate-500 font-cairo">أعلى قيمة</span>
+                                    </button>
+                                    <button type="button" onclick="applyAutoSumFunction('MIN')" class="w-full px-3.5 py-2 text-xs font-bold text-slate-300 hover:bg-slate-800 hover:text-white flex items-center justify-between">
+                                        <span>Min</span>
+                                        <span class="text-[10px] text-slate-500 font-cairo">أقل قيمة</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- شريط الصيغة Formula Bar -->
+                    <div class="bg-slate-900/70 border-b border-slate-800 p-2.5 flex items-center gap-2" dir="ltr">
+                        <!-- مربع الاسم Name Box -->
+                        <div id="sim-name-box" title="صندوق الاسم (الخلية النشطة)"
+                            class="w-14 sm:w-16 shrink-0 text-center font-mono font-black text-sm bg-slate-950 border border-slate-700 rounded-lg py-1.5 text-emerald-400">
+                            A6
+                        </div>
+
+                        <!-- أزرار ✗ و ✓ و fx -->
+                        <div class="flex items-center border border-slate-700 rounded-lg bg-slate-950 overflow-hidden shrink-0">
+                            <button type="button" onclick="cancelFormula()" title="إلغاء العملية (✗)"
+                                class="px-2.5 py-1.5 text-rose-400 hover:bg-rose-500/20 font-black text-sm transition">✗</button>
+                            <button type="button" onclick="confirmFormula()" title="تأكيد وتنفيذ المعادلة (✓)"
+                                class="px-2.5 py-1.5 text-emerald-400 hover:bg-emerald-500/20 font-black text-sm border-x border-slate-700 transition">✓</button>
+                            <button type="button" onclick="openFxModal()" title="إدراج دالة (Insert Function)"
+                                class="px-2.5 py-1.5 font-serif italic font-black text-sky-400 hover:bg-sky-500/20 text-sm transition">fx</button>
+                        </div>
+
+                        <!-- حقل كتابة المعادلة -->
+                        <input type="text" id="sim-formula-input" autocomplete="off" spellcheck="false"
+                            placeholder="اكتب المعادلة مثل =AVERAGE(A1:A5) ثم اضغط Enter أو ✓..."
+                            class="flex-1 min-w-0 font-mono text-sm sm:text-base font-bold px-3 py-1.5 bg-slate-950 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/25 rounded-lg outline-none text-white placeholder:text-slate-500 placeholder:font-sans placeholder:text-xs">
+                    </div>
+
+                    <!-- جدول الخلايا التفاعلي A إلى F و 1 إلى 7 -->
+                    <div class="overflow-x-auto bg-slate-950 p-2">
+                        <table class="excel-table rounded overflow-hidden min-w-[460px]" id="excel-grid">
+                            <thead>
+                                <tr>
+                                    <th class="w-10 bg-slate-800 text-slate-500">◢</th>
+                                    <th data-col="A">A</th>
+                                    <th data-col="B">B</th>
+                                    <th data-col="C">C</th>
+                                    <th data-col="D">D</th>
+                                    <th data-col="E">E</th>
+                                    <th data-col="F">F</th>
+                                </tr>
+                            </thead>
+                            <tbody id="excel-grid-body">
+                                <!-- يتم توليد الصفوف 1 إلى 7 عبر JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- شريط الحالة السفلي -->
+                    <div class="bg-slate-900 border-t border-slate-800 px-3 py-2 flex flex-wrap items-center justify-between gap-2 text-[11px] font-bold text-slate-400">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-slate-950 text-emerald-400 px-2.5 py-0.5 rounded border border-slate-700 font-extrabold">Sheet1</span>
+                            <span class="hidden sm:inline">تلميح: في التمرين 4 يمكنك الضغط على <span class="kbd-inline text-[10px]">Ctrl</span> والنقر على الخلايا أثناء كتابة المعادلة!</span>
+                        </div>
+                        <span id="sim-status-text" class="text-emerald-400 font-bold">جاهز للعمل</span>
+                    </div>
+                </div>
+
+                <!-- مربع رسائل التصحيح الذكي الفوري -->
+                <div id="sim-feedback" class="hidden rounded-2xl p-4 border-2 text-sm font-bold leading-relaxed transition-all"></div>
+            </div>
+        </section>
+
+        <!-- ==================== 7. قسم الأسئلة والأجوبة النموذجية (Accordion Q&A) ==================== -->
+        <section id="qa-section" class="space-y-4 scroll-mt-20">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-black text-xl flex items-center justify-center">📝</span>
+                    <div>
+                        <span class="text-xs font-bold text-emerald-400 block">مراجعة مركّزة • أسئلة المحاضرات والامتحان العملي</span>
+                        <h2 class="text-xl sm:text-2xl font-black text-white">أسئلة وأجوبة نموذجية للامتحان (5 أسئلة)</h2>
+                    </div>
+                </div>
+                <button type="button" id="qa-toggle-all-btn" onclick="toggleAllQA()"
+                    class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-emerald-600 border border-slate-700 text-slate-100 text-xs sm:text-sm font-extrabold transition shadow">
+                    👁️ فتح الكل
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <!-- س1 -->
+                <article class="bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden">
+                    <button type="button" onclick="toggleQA('qa-1', this)"
+                        class="qa-header w-full p-5 text-right flex items-center justify-between gap-4 hover:bg-slate-800/50 transition">
+                        <div class="space-y-1">
+                            <span class="inline-block text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">سؤال 1 • من المحاضرة 3</span>
+                            <h3 class="font-extrabold text-sm sm:text-base text-white leading-snug">
+                                هل يمكن الحصول على معدل مجموعة أرقام بنفس خطوات دالة الجمع؟
+                            </h3>
+                        </div>
+                        <span class="qa-arrow shrink-0 w-8 h-8 rounded-xl bg-slate-800 text-emerald-400 flex items-center justify-center font-black transition-transform">▾</span>
+                    </button>
+                    <div id="qa-1" class="qa-body hidden border-t border-slate-800 bg-slate-950/70 p-5 text-sm text-slate-200 leading-relaxed space-y-2">
+                        <p><strong class="text-emerald-400">الجواب النموذجي:</strong> نعم، وبنفس خطوات دالة الجمع تماماً، لكننا فقط نغيّر نوع الدالة من دالة الجمع (<span class="ltr-inline font-mono text-slate-300">Sum</span>) إلى دالة المعدل (<span class="formula-pill">Average</span>) عبر الضغط على السهم الصغير بجانب أيكونة الجمع التلقائي <span class="ltr-inline font-bold text-emerald-300">Σ AutoSum</span> واختيار <span class="ltr-inline font-bold text-white">Average</span>، ثم الضغط على علامة الصح (<strong class="text-emerald-400">✓</strong>) في شريط الصيغة أو مفتاح <span class="kbd-inline">Enter</span>.</p>
+                    </div>
+                </article>
+
+                <!-- س2 -->
+                <article class="bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden">
+                    <button type="button" onclick="toggleQA('qa-2', this)"
+                        class="qa-header w-full p-5 text-right flex items-center justify-between gap-4 hover:bg-slate-800/50 transition">
+                        <div class="space-y-1">
+                            <span class="inline-block text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/30">سؤال 2 • معدل عمودي</span>
+                            <h3 class="font-extrabold text-sm sm:text-base text-white leading-snug">
+                                قم بإيجاد المعدل لعدد من الخلايا بصورة عمودية (<span class="formula-pill">A1, A2, A3</span> والخلية النشطة <span class="formula-pill">A4</span>)؟
+                            </h3>
+                        </div>
+                        <span class="qa-arrow shrink-0 w-8 h-8 rounded-xl bg-slate-800 text-emerald-400 flex items-center justify-center font-black transition-transform">▾</span>
+                    </button>
+                    <div id="qa-2" class="qa-body hidden border-t border-slate-800 bg-slate-950/70 p-5 text-sm text-slate-200 leading-relaxed space-y-2.5">
+                        <ol class="list-decimal list-inside space-y-1.5">
+                            <li>ندخل البيانات الرقمية في الخلايا العمودية <span class="formula-pill">A1</span> و <span class="formula-pill">A2</span> و <span class="formula-pill">A3</span>.</li>
+                            <li>نجعل الخلية <span class="formula-pill">A4</span> خلية نشطة بالنقر عليها بزر الماوس الأيسر في ورقة العمل (<span class="ltr-inline">Worksheet</span>).</li>
+                            <li>ننقر على السهم الصغير لأيقونة الجمع التلقائي <span class="ltr-inline font-bold text-emerald-300">Σ AutoSum</span> ونختار دالة المعدل <span class="ltr-inline font-bold text-white">Average</span> (أو نكتب المعادلة يدوياً بالكيبورد الإنجليزي).</li>
+                            <li>تظهر في شريط الصيغة المعادلة: <span class="formula-pill">=AVERAGE(A1:A3)</span> مع علامتي الصح (<strong class="text-emerald-400">✓</strong>) والخطأ (<strong class="text-rose-400">✗</strong>).</li>
+                            <li>نضغط على علامة الصح (<strong class="text-emerald-400">✓</strong>) أو مفتاح <span class="kbd-inline">Enter</span> ليظهر ناتج المعدل في الخلية النشطة <span class="formula-pill">A4</span>.</li>
+                        </ol>
+                    </div>
+                </article>
+
+                <!-- س3 -->
+                <article class="bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden">
+                    <button type="button" onclick="toggleQA('qa-3', this)"
+                        class="qa-header w-full p-5 text-right flex items-center justify-between gap-4 hover:bg-slate-800/50 transition">
+                        <div class="space-y-1">
+                            <span class="inline-block text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30">سؤال 3 • معدل أفقي</span>
+                            <h3 class="font-extrabold text-sm sm:text-base text-white leading-snug">
+                                قم بإيجاد معدل عدد من الخلايا بشكل أفقي (<span class="formula-pill">A1, B1, C1</span> والخلية النشطة <span class="formula-pill">D1</span>)؟
+                            </h3>
+                        </div>
+                        <span class="qa-arrow shrink-0 w-8 h-8 rounded-xl bg-slate-800 text-emerald-400 flex items-center justify-center font-black transition-transform">▾</span>
+                    </button>
+                    <div id="qa-3" class="qa-body hidden border-t border-slate-800 bg-slate-950/70 p-5 text-sm text-slate-200 leading-relaxed space-y-2.5">
+                        <ol class="list-decimal list-inside space-y-1.5">
+                            <li>ندخل البيانات في الخلايا الأفقية <span class="formula-pill">A1</span> و <span class="formula-pill">B1</span> و <span class="formula-pill">C1</span>.</li>
+                            <li>نجعل الخلية <span class="formula-pill">D1</span> خلية نشطة بالنقر عليها بزر الماوس الأيسر.</li>
+                            <li>ننقر على السهم بجانب أيقونة <span class="ltr-inline font-bold text-emerald-300">Σ AutoSum</span> ونختار <span class="ltr-inline font-bold text-white">Average</span> (أو نكتب المعادلة يدوياً).</li>
+                            <li>تظهر في شريط الصيغة المعادلة: <span class="formula-pill">=AVERAGE(A1:C1)</span> مع علامتي الصح والخطأ.</li>
+                            <li>نضغط على علامة الصح (<strong class="text-emerald-400">✓</strong>) أو <span class="kbd-inline">Enter</span> ليظهر ناتج المعدل مباشرة في الخلية النشطة <span class="formula-pill">D1</span>.</li>
+                        </ol>
+                    </div>
+                </article>
+
+                <!-- س4 -->
+                <article class="bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden">
+                    <button type="button" onclick="toggleQA('qa-4', this)"
+                        class="qa-header w-full p-5 text-right flex items-center justify-between gap-4 hover:bg-slate-800/50 transition">
+                        <div class="space-y-1">
+                            <span class="inline-block text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">سؤال 4 • خلايا مبعثرة (عملي + نظري)</span>
+                            <h3 class="font-extrabold text-sm sm:text-base text-white leading-snug">
+                                جد معدل عدد من الخلايا بشكل مبعثر (ليست في نفس الصف أو العمود مثل <span class="formula-pill">A1, B2, C3, D4, E5</span> والخلية النشطة <span class="formula-pill">F7</span>)؟
+                            </h3>
+                        </div>
+                        <span class="qa-arrow shrink-0 w-8 h-8 rounded-xl bg-slate-800 text-emerald-400 flex items-center justify-center font-black transition-transform">▾</span>
+                    </button>
+                    <div id="qa-4" class="qa-body hidden border-t border-slate-800 bg-slate-950/70 p-5 text-sm text-slate-200 leading-relaxed space-y-3">
+                        <ol class="list-decimal list-inside space-y-1.5">
+                            <li>ندخل البيانات في الخلايا المبعثرة <span class="formula-pill">A1</span>، <span class="formula-pill">B2</span>، <span class="formula-pill">C3</span>، <span class="formula-pill">D4</span>، <span class="formula-pill">E5</span>، ونجعل الخلية <span class="formula-pill">F7</span> خلية نشطة بالنقر عليها بزر الماوس الأيسر.</li>
+                            <li>ننقر على السهم بجانب <span class="ltr-inline font-bold text-emerald-300">Σ AutoSum</span> ونختار <span class="ltr-inline font-bold text-white">Average</span>، فتظهر <span class="formula-pill">=AVERAGE()</span> في شريط الصيغة.</li>
+                            <li>ندخل أسماء الخلايا داخل القوسين ثم نضغط علامة الصح (<strong class="text-emerald-400">✓</strong>) أو <span class="kbd-inline">Enter</span>.</li>
+                        </ol>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3.5 space-y-1">
+                                <div class="text-xs font-black text-emerald-300">💻 في الامتحان العملي (على حاسبة Excel 2013):</div>
+                                <p class="text-xs text-slate-200 leading-relaxed">
+                                    نستخدم <strong>الفاصلة</strong> (<span class="formula-pill">,</span>) من مفتاح حرف <strong>و</strong> بالإنجليزي (أو نضغط <span class="kbd-inline">Ctrl</span> وننقر على كل خلية):
+                                    <span class="block mt-1.5"><span class="formula-pill">=AVERAGE(A1,B2,C3,D4,E5)</span></span>
+                                </p>
+                            </div>
+                            <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3.5 space-y-1">
+                                <div class="text-xs font-black text-amber-300">📄 في الامتحان النظري (حسب نص الملزمة):</div>
+                                <p class="text-xs text-slate-200 leading-relaxed">
+                                    وردت في المحاضرة 4 بصيغة النقطتين (<span class="kbd-inline">Shift + ك</span>):
+                                    <span class="block mt-1.5"><span class="formula-pill-blue">=AVERAGE(A1:B2:C3:D4:E5)</span></span>
+                                    <span class="block text-[11px] text-amber-200 mt-1">يفضّل توضيح الفاصلة للتطبيق العملي مع صيغة الملزمة لتضمن الدرجة الكاملة!</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- س5 -->
+                <article class="bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden">
+                    <button type="button" onclick="toggleQA('qa-5', this)"
+                        class="qa-header w-full p-5 text-right flex items-center justify-between gap-4 hover:bg-slate-800/50 transition">
+                        <div class="space-y-1">
+                            <span class="inline-block text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/30">سؤال 5 • طريقة fx (المحاضرة 4)</span>
+                            <h3 class="font-extrabold text-sm sm:text-base text-white leading-snug">
+                                اشرح خطوات إيجاد معدل الخلايا من <span class="formula-pill">A1</span> إلى <span class="formula-pill">A6</span> باستخدام أيقونة الدالة <span class="formula-pill-blue">fx (Insert Function)</span>؟
+                            </h3>
+                        </div>
+                        <span class="qa-arrow shrink-0 w-8 h-8 rounded-xl bg-slate-800 text-emerald-400 flex items-center justify-center font-black transition-transform">▾</span>
+                    </button>
+                    <div id="qa-5" class="qa-body hidden border-t border-slate-800 bg-slate-950/70 p-5 text-sm text-slate-200 leading-relaxed">
+                        <ol class="list-decimal list-inside space-y-1.5">
+                            <li>بعد إدخال الأرقام في الخلايا من <span class="formula-pill">A1</span> إلى <span class="formula-pill">A6</span>، نحدد الخلية النشطة المراد إظهار الناتج فيها (مثلاً <span class="formula-pill">A7</span>).</li>
+                            <li>ننقر بالزر الأيسر للماوس على أيقونة الدالة <span class="formula-pill-blue">fx (Insert Function)</span> من تبويب <span class="ltr-inline font-bold">Formulas</span> (أو شريط الصيغة).</li>
+                            <li>يظهر مربع حوار <span class="ltr-inline font-bold text-sky-300">Insert Function</span>، نختار منه تصنيف الدالة (<span class="ltr-inline">Function Category</span>) مثل <span class="ltr-inline">Most Recently Used</span> أو <span class="ltr-inline">Statistical</span>.</li>
+                            <li>نختار اسم الدالة <span class="formula-pill">AVERAGE</span> ثم نضغط موافق (<span class="kbd-inline">OK</span>).</li>
+                            <li>تظهر نافذة وسائط الدالة (<span class="ltr-inline font-bold text-sky-300">Function Arguments</span>)، وفي حقل <span class="formula-pill-blue">Number1</span> نكتب اسم أول خلية <span class="formula-pill">A1</span> ثم علامة النقطتين <span class="formula-pill">:</span> (عبر <span class="kbd-inline">Shift + ك</span>) ثم اسم آخر خلية <span class="formula-pill">A6</span> لتصبح <span class="formula-pill">A1:A6</span>.</li>
+                            <li>تظهر المعادلة <span class="formula-pill">=AVERAGE(A1:A6)</span> في شريط الصيغة والخلية النشطة، وبمجرد الضغط على <span class="kbd-inline">OK</span> أو علامة الصح (<strong class="text-emerald-400">✓</strong>) يتم تنفيذ المعادلة وظهور الناتج.</li>
+                        </ol>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== نافذة منبثقة حقيقية تحاكي fx Insert Function & Function Arguments ==================== -->
+    <div id="fx-modal-backdrop" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4" dir="ltr">
+        <!-- الخطوة 1: مربع حوار Insert Function -->
+        <div id="fx-dialog-step1" class="w-full max-w-md bg-slate-900 border-2 border-slate-700 rounded-2xl shadow-2xl overflow-hidden text-left">
+            <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="font-serif italic font-black text-sky-400">fx</span>
+                    <span class="font-bold text-sm text-white">Insert Function</span>
+                </div>
+                <button type="button" onclick="closeFxModal()" class="text-slate-400 hover:text-rose-400 font-black text-sm px-1.5">✕</button>
+            </div>
+
+            <div class="p-4 space-y-4 text-xs">
+                <div class="space-y-1.5">
+                    <label for="fx-category-select" class="block text-slate-300 font-bold">Or select a category (تصنيف الدالة):</label>
+                    <select id="fx-category-select" onchange="updateFxFunctionList()"
+                        class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-semibold outline-none focus:border-sky-500">
+                        <option value="recent">Most Recently Used</option>
+                        <option value="statistical">Statistical</option>
+                        <option value="all">All</option>
+                    </select>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-slate-300 font-bold">Select a function (اختر اسم الدالة):</label>
+                    <div id="fx-function-list" class="bg-slate-950 border border-slate-700 rounded-lg h-36 overflow-y-auto divide-y divide-slate-800/80 font-mono">
+                        <!-- يتم تعبئتها عبر JS -->
+                    </div>
+                </div>
+
+                <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-2.5 space-y-1">
+                    <div id="fx-selected-signature" class="font-mono font-bold text-emerald-400">AVERAGE(number1, [number2], ...)</div>
+                    <p id="fx-selected-desc" class="text-[11px] text-slate-400 leading-relaxed">
+                        Returns the average (arithmetic mean) of its arguments, which can be numbers or names, arrays, or references that contain numbers.
+                    </p>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-1">
+                    <button type="button" onclick="closeFxModal()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold transition">Cancel</button>
+                    <button type="button" onclick="goToFxStep2()" class="px-5 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-black transition">OK</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- الخطوة 2: مربع حوار Function Arguments -->
+        <div id="fx-dialog-step2" class="hidden w-full max-w-md bg-slate-900 border-2 border-emerald-500/50 rounded-2xl shadow-2xl overflow-hidden text-left">
+            <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="font-serif italic font-black text-emerald-400">fx</span>
+                    <span class="font-bold text-sm text-white">Function Arguments — <span id="fx-arg-fn-name" class="text-emerald-400">AVERAGE</span></span>
+                </div>
+                <button type="button" onclick="closeFxModal()" class="text-slate-400 hover:text-rose-400 font-black text-sm px-1.5">✕</button>
+            </div>
+
+            <div class="p-4 space-y-4 text-xs">
+                <p class="text-slate-300 font-cairo text-right leading-relaxed bg-sky-500/10 border border-sky-500/30 rounded-xl p-2.5" dir="rtl">
+                    اكتب نطاق الخلايا في الحقل <strong>Number1</strong> (مثل <span class="formula-pill">A1:A5</span> أو للمبعثرة <span class="formula-pill">A1,B2,C3,D4</span>) ثم اضغط <strong>OK</strong> لتنفيذ المعادلة!
+                </p>
+
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2">
+                        <label for="fx-arg-num1" class="w-20 font-bold text-emerald-300 shrink-0">Number1:</label>
+                        <input type="text" id="fx-arg-num1" autocomplete="off" spellcheck="false"
+                            placeholder="مثال: A1:A5"
+                            oninput="updateFxArgPreview()"
+                            class="flex-1 bg-slate-950 border border-slate-600 focus:border-emerald-400 rounded-lg px-3 py-2 font-mono font-bold text-white outline-none">
+                    </div>
+                    <div class="flex items-center gap-2 opacity-75">
+                        <label for="fx-arg-num2" class="w-20 font-bold text-slate-400 shrink-0">Number2:</label>
+                        <input type="text" id="fx-arg-num2" autocomplete="off" spellcheck="false"
+                            placeholder="(اختياري)"
+                            oninput="updateFxArgPreview()"
+                            class="flex-1 bg-slate-950 border border-slate-700 focus:border-sky-400 rounded-lg px-3 py-2 font-mono font-bold text-white outline-none">
+                    </div>
+                </div>
+
+                <!-- معاينة الصيغة والنتيجة داخل نافذة Function Arguments -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1.5 font-mono">
+                    <div class="text-[11px] text-slate-400">Formula Bar Preview:</div>
+                    <div id="fx-arg-formula-preview" class="text-sm font-black text-emerald-400">=AVERAGE()</div>
+                </div>
+
+                <div class="flex items-center justify-between pt-1">
+                    <button type="button" onclick="backToFxStep1()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition">← Back</button>
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="closeFxModal()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold transition">Cancel</button>
+                        <button type="button" onclick="applyFxArguments()" class="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black transition">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== التذييل ==================== -->
+    <footer class="mt-14 bg-slate-950 border-t border-slate-800 py-8 px-4 text-center">
+        <div class="max-w-4xl mx-auto space-y-2">
+            <div class="inline-flex items-center gap-2 text-emerald-400 font-black text-base">
+                <span>★</span>
+                <span>بالتوفيق والامتياز في الامتحان العملي!</span>
+                <span>★</span>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                تذكّر دائماً: الإملاء الصحيح <span class="ltr-inline text-emerald-400 font-mono font-bold">AVERAGE</span> (<span class="ltr-inline font-mono">AVE-RAGE</span>) • حوّل اللغة بـ <span class="ltr-inline font-mono text-slate-200">Alt+Shift</span> • ابدأ بـ <span class="ltr-inline font-mono text-emerald-400">=</span> • تعامل مع أسماء الخلايا وليس الأرقام المباشرة.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ==================== أكواد JavaScript التفاعلية الكاملة ==================== -->
+    <script>
+        /* =========================================================================
+           1. نظام المؤثرات الصوتية الخفيفة (Web Audio API - بدون ملفات خارجية)
+           ========================================================================= */
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playTone(type = 'click') {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+
+                if (type === 'click') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(580, now);
+                    osc.frequency.exponentialRampToValueAtTime(320, now + 0.05);
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.055);
+                } else if (type === 'key') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(720, now);
+                    osc.frequency.exponentialRampToValueAtTime(420, now + 0.045);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'success') {
+                    const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+                    notes.forEach((freq, i) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+                        gain.gain.setValueAtTime(0.07, now + i * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.22);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + i * 0.08);
+                        osc.stop(now + i * 0.08 + 0.24);
+                    });
+                } else if (type === 'error') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.linearRampToValueAtTime(150, now + 0.18);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.21);
+                }
+            } catch (e) {
+                // تجاهل أي خطأ صوتي بصمت لضمان استقرار التطبيق
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            const label = document.getElementById('sound-label');
+            const btn = document.getElementById('sound-toggle-btn');
+
+            if (soundEnabled) {
+                icon.textContent = '🔊';
+                label.textContent = 'الصوت: مفعل';
+                btn.classList.remove('text-slate-400');
+                btn.classList.add('text-emerald-400');
+                playTone('click');
+            } else {
+                icon.textContent = '🔇';
+                label.textContent = 'الصوت: مكتوم';
+                btn.classList.remove('text-emerald-400');
+                btn.classList.add('text-slate-400');
+            }
+        }
+
+
+        /* =========================================================================
+           2. لوحة المفاتيح التفاعلية (9 خطوات لبناء =AVERAGE(A1:A5))
+           ========================================================================= */
+        const kbSteps = [
+            {
+                step: 1,
+                shortTitle: '1. اللغة EN (Alt+Shift)',
+                title: 'الخطوة 1: تحويل لغة الكيبورد إلى الإنجليزية',
+                desc: 'قبل كتابة أي حرف، اضغط مفتاحي <span class="kbd-inline">Alt</span> + <span class="kbd-inline">Shift</span> معاً لتحويل لغة الإدخال إلى الإنجليزية (<span class="ltr-inline font-mono text-sky-300">EN</span>).',
+                keys: ['Alt', 'ShiftLeft'],
+                modifiers: ['Alt', 'ShiftLeft'],
+                hint: 'المفاتيح المضاءة: Alt + Shift',
+                formula: '(بانتظار الكتابة...)',
+                lang: 'AR → EN'
+            },
+            {
+                step: 2,
+                shortTitle: '2. علامة اليساوي =',
+                title: 'الخطوة 2: كتابة علامة اليساوي (=)',
+                desc: 'اضغط مفتاح <span class="kbd-inline">=</span> الموجود في الصف العلوي للأرقام بجانب <span class="kbd-inline">Backspace</span>؛ فكل معادلة في Excel يجب أن تبدأ بعلامة اليساوي.',
+                keys: ['='],
+                modifiers: [],
+                hint: 'المفتاح المضاء: =',
+                formula: '=',
+                lang: 'EN'
+            },
+            {
+                step: 3,
+                shortTitle: '3. كتابة AVERAGE',
+                title: 'الخطوة 3: كتابة اسم الدالة AVERAGE بدقة',
+                desc: 'اكتب الحروف بالترتيب: <span class="kbd-inline">A</span> <span class="kbd-inline">V</span> <span class="kbd-inline">E</span> <span class="kbd-inline">R</span> <span class="kbd-inline">A</span> <span class="kbd-inline">G</span> <span class="kbd-inline">E</span> (تذكّر التقسيم: <strong>AVE - RAGE</strong>، أو اكتب AV واضغط <span class="kbd-inline">Tab</span> للإكمال التلقائي).',
+                keys: ['A', 'V', 'E', 'R', 'G'],
+                modifiers: [],
+                hint: 'المفاتيح المضاءة: A - V - E - R - A - G - E',
+                formula: '=AVERAGE',
+                lang: 'EN'
+            },
+            {
+                step: 4,
+                shortTitle: '4. فتح القوس (',
+                title: 'الخطوة 4: فتح القوس ( عبر Shift + 9',
+                desc: 'اضغط باستمرار على مفتاح <span class="kbd-inline">Shift</span> ومعه مفتاح الرقم <span class="kbd-inline">9</span> لفتح القوس <span class="formula-pill">(</span>.',
+                keys: ['ShiftLeft', '9'],
+                modifiers: ['ShiftLeft'],
+                hint: 'المفاتيح المضاءة: Shift + 9',
+                formula: '=AVERAGE(',
+                lang: 'EN'
+            },
+            {
+                step: 5,
+                shortTitle: '5. أول خلية A1',
+                title: 'الخطوة 5: كتابة اسم أول خلية A1',
+                desc: 'اكتب عنوان أول خلية في النطاق المطلوب حساب معدله: حرف <span class="kbd-inline">A</span> ثم الرقم <span class="kbd-inline">1</span>.',
+                keys: ['A', '1'],
+                modifiers: [],
+                hint: 'المفاتيح المضاءة: A ثم 1',
+                formula: '=AVERAGE(A1',
+                lang: 'EN'
+            },
+            {
+                step: 6,
+                shortTitle: '6. النقطتان : (Shift+ك)',
+                title: 'الخطوة 6: كتابة علامة النقطتين (:) للمدى المتصل',
+                desc: 'اضغط باستمرار على <span class="kbd-inline">Shift</span> ومعه مفتاح حرف <strong>ك</strong> (<span class="kbd-inline">; :</span>) لكتابة النقطتين <span class="formula-pill">:</span> التي تعني "إلى".',
+                keys: ['ShiftLeft', ';'],
+                modifiers: ['ShiftLeft'],
+                hint: 'المفاتيح المضاءة: Shift + حرف ك (زر ; :)',
+                formula: '=AVERAGE(A1:',
+                lang: 'EN'
+            },
+            {
+                step: 7,
+                shortTitle: '7. آخر خلية A5',
+                title: 'الخطوة 7: كتابة اسم آخر خلية A5',
+                desc: 'اكتب عنوان آخر خلية في النطاق المطلوب: حرف <span class="kbd-inline">A</span> ثم الرقم <span class="kbd-inline">5</span>.',
+                keys: ['A', '5'],
+                modifiers: [],
+                hint: 'المفاتيح المضاءة: A ثم 5',
+                formula: '=AVERAGE(A1:A5',
+                lang: 'EN'
+            },
+            {
+                step: 8,
+                shortTitle: '8. إغلاق القوس )',
+                title: 'الخطوة 8: إغلاق القوس ) عبر Shift + 0',
+                desc: 'اضغط باستمرار على مفتاح <span class="kbd-inline">Shift</span> ومعه مفتاح الرقم <span class="kbd-inline">0</span> لإغلاق القوس <span class="formula-pill">)</span>.',
+                keys: ['ShiftLeft', '0'],
+                modifiers: ['ShiftLeft'],
+                hint: 'المفاتيح المضاءة: Shift + 0',
+                formula: '=AVERAGE(A1:A5)',
+                lang: 'EN'
+            },
+            {
+                step: 9,
+                shortTitle: '9. مفتاح Enter للنتيجة',
+                title: 'الخطوة 9: الضغط على Enter للتنفيذ وإظهار الناتج',
+                desc: 'اضغط مفتاح <span class="kbd-inline">Enter</span> (أو علامة الصح ✓ في شريط الصيغة) ليقوم Excel فوراً بحساب المعدل وإظهار الناتج <strong class="text-emerald-400">30</strong>!',
+                keys: ['Enter'],
+                modifiers: [],
+                hint: 'المفتاح المضاء: Enter',
+                formula: '30  ←  =AVERAGE(A1:A5)',
+                lang: '✓ تم التنفيذ'
+            }
+        ];
+
+        let currentKbIdx = 0;
+        let kbAutoTimer = null;
+
+        function renderKbStepButtons() {
+            const grid = document.getElementById('kb-steps-grid');
+            grid.innerHTML = '';
+            kbSteps.forEach((s, i) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.id = `kb-card-${i}`;
+                btn.onclick = () => {
+                    stopKbAutoPlay();
+                    playTone('key');
+                    setKbStep(i);
+                };
+                btn.className = 'text-right p-3 rounded-xl border transition flex items-center justify-between gap-2 text-xs font-bold';
+                btn.innerHTML = `
+                    <span class="truncate">${s.shortTitle}</span>
+                    <span class="shrink-0 font-mono text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-400" dir="ltr">${i === 0 ? 'Alt+Shift' : i === 8 ? 'Enter' : s.formula.slice(-3)}</span>
+                `;
+                grid.appendChild(btn);
+            });
+        }
+
+        function setKbStep(idx) {
+            currentKbIdx = idx;
+            const s = kbSteps[idx];
+
+            document.getElementById('kb-step-badge').textContent = `الخطوة ${s.step} / 9`;
+            document.getElementById('kb-step-title').textContent = s.title;
+            document.getElementById('kb-step-desc').innerHTML = s.desc;
+            document.getElementById('kb-keys-hint').textContent = s.hint;
+            document.getElementById('kb-formula-preview').textContent = s.formula;
+            document.getElementById('kb-lang-pill').textContent = s.lang;
+
+            document.getElementById('kb-prev-btn').disabled = (idx === 0);
+            document.getElementById('kb-next-btn').textContent = (idx === kbSteps.length - 1) ? 'إعادة ↺' : 'التالي ►';
+
+            // إزالة الإضاءة السابقة
+            document.querySelectorAll('.kbd-key').forEach(k => k.classList.remove('key-active', 'key-modifier-active'));
+
+            // إضاءة مفاتيح الخطوة
+            s.keys.forEach(kName => {
+                const keyEl = document.querySelector(`.kbd-key[data-key="${CSS.escape(kName)}"]`);
+                if (keyEl) {
+                    if (s.modifiers.includes(kName)) {
+                        keyEl.classList.add('key-modifier-active');
+                    } else {
+                        keyEl.classList.add('key-active');
+                    }
+                }
+            });
+
+            // تحديث تنسيق البطاقات
+            kbSteps.forEach((_, i) => {
+                const card = document.getElementById(`kb-card-${i}`);
+                if (!card) return;
+                if (i === idx) {
+                    card.className = 'text-right p-3 rounded-xl border-2 border-emerald-500 bg-emerald-500/15 text-emerald-200 shadow transition flex items-center justify-between gap-2 text-xs font-extrabold';
+                } else {
+                    card.className = 'text-right p-3 rounded-xl border border-slate-800 bg-slate-950/70 hover:border-slate-600 text-slate-300 transition flex items-center justify-between gap-2 text-xs font-bold';
+                }
+            });
+        }
+
+        function stopKbAutoPlay() {
+            if (kbAutoTimer) {
+                clearInterval(kbAutoTimer);
+                kbAutoTimer = null;
+                const btn = document.getElementById('kb-autoplay-btn');
+                btn.textContent = '▶ تشغيل تلقائي';
+                btn.classList.remove('bg-rose-500', 'text-white');
+                btn.classList.add('bg-sky-500', 'text-slate-950');
+            }
+        }
+
+        document.getElementById('kb-prev-btn').addEventListener('click', () => {
+            stopKbAutoPlay();
+            if (currentKbIdx > 0) {
+                playTone('key');
+                setKbStep(currentKbIdx - 1);
+            }
+        });
+
+        document.getElementById('kb-next-btn').addEventListener('click', () => {
+            stopKbAutoPlay();
+            playTone('key');
+            if (currentKbIdx < kbSteps.length - 1) {
+                setKbStep(currentKbIdx + 1);
+            } else {
+                setKbStep(0);
+            }
+        });
+
+        document.getElementById('kb-autoplay-btn').addEventListener('click', () => {
+            const btn = document.getElementById('kb-autoplay-btn');
+            if (kbAutoTimer) {
+                stopKbAutoPlay();
+                playTone('click');
+                return;
+            }
+            playTone('click');
+            if (currentKbIdx === kbSteps.length - 1) setKbStep(0);
+
+            btn.textContent = '⏸ إيقاف';
+            btn.classList.remove('bg-sky-500', 'text-slate-950');
+            btn.classList.add('bg-rose-500', 'text-white');
+
+            kbAutoTimer = setInterval(() => {
+                if (currentKbIdx < kbSteps.length - 1) {
+                    playTone('key');
+                    setKbStep(currentKbIdx + 1);
+                } else {
+                    stopKbAutoPlay();
+                    playTone('success');
+                }
+            }, 2100);
+        });
+
+
+        /* =========================================================================
+           3. محاكي Excel 2013 التفاعلي (4 تمارين + AutoSum Dropdown + fx Modal)
+           ========================================================================= */
+        const COLS = ['A', 'B', 'C', 'D', 'E', 'F'];
+        const ROWS = [1, 2, 3, 4, 5, 6, 7];
+
+        const exercises = {
+            1: {
+                id: 1,
+                type: 'vertical',
+                title: 'التمرين 1 (معدل خلايا عمودية):',
+                desc: 'أمامك الأرقام (10, 20, 30, 40, 50) في الخلايا <span class="formula-pill">A1:A5</span>. احسب معدلها في الخلية النشطة <span class="formula-pill">A6</span> باستخدام قائمة <strong>Σ AutoSum ▾ ← Average</strong> أو أيقونة <strong>fx</strong> أو الكتابة اليدوية.',
+                targetCell: 'A6',
+                rangeText: 'A1:A5',
+                expectedFormula: '=AVERAGE(A1:A5)',
+                cells: ['A1', 'A2', 'A3', 'A4', 'A5'],
+                data: { A1: 10, A2: 20, A3: 30, A4: 40, A5: 50 },
+                expectedResult: 30
+            },
+            2: {
+                id: 2,
+                type: 'horizontal',
+                title: 'التمرين 2 (معدل خلايا أفقية):',
+                desc: 'أمامك الأرقام (80, 90, 100) في الصف الأول <span class="formula-pill">A1:C1</span>. احسب معدلها في الخلية النشطة <span class="formula-pill">D1</span> (الناتج الصحيح 90).',
+                targetCell: 'D1',
+                rangeText: 'A1:C1',
+                expectedFormula: '=AVERAGE(A1:C1)',
+                cells: ['A1', 'B1', 'C1'],
+                data: { A1: 80, B1: 90, C1: 100 },
+                expectedResult: 90
+            },
+            3: {
+                id: 3,
+                type: 'matrix',
+                title: 'التمرين 3 (معدل مصفوفة 3×3):',
+                desc: 'أمامك مصفوفة أرقام من <span class="formula-pill">A1</span> إلى <span class="formula-pill">C3</span>. احسب معدل المصفوفة كاملةً في الخلية النشطة <span class="formula-pill">D4</span> (الناتج الصحيح 50).',
+                targetCell: 'D4',
+                rangeText: 'A1:C3',
+                expectedFormula: '=AVERAGE(A1:C3)',
+                cells: ['A1', 'B1', 'C1', 'A2', 'B2', 'C2', 'A3', 'B3', 'C3'],
+                data: { A1: 10, B1: 20, C1: 30, A2: 40, B2: 50, C2: 60, A3: 70, B3: 80, C3: 90 },
+                expectedResult: 50
+            },
+            4: {
+                id: 4,
+                type: 'scattered',
+                title: 'التمرين 4 (معدل خلايا مبعثرة):',
+                desc: 'أمامك أرقام مبعثرة في <span class="formula-pill">A1=10</span>، <span class="formula-pill">B2=20</span>، <span class="formula-pill">C3=30</span>، <span class="formula-pill">D4=40</span>. احسب معدلها في الخلية النشطة <span class="formula-pill">E5</span> باستخدام الفاصلة <span class="formula-pill">,</span> (أو استخدم <strong>fx</strong> أو <span class="kbd-inline">Ctrl+Click</span>).',
+                targetCell: 'E5',
+                rangeText: 'A1,B2,C3,D4',
+                expectedFormula: '=AVERAGE(A1,B2,C3,D4)',
+                cells: ['A1', 'B2', 'C3', 'D4'],
+                data: { A1: 10, B2: 20, C3: 30, D4: 40 },
+                expectedResult: 25
+            }
+        };
+
+        let currentExId = 1;
+        let selectedCell = 'A6';
+        let gridFormulas = {};
+        const solvedExercises = new Set();
+
+        // بناء جدول الخلايا A-F و 1-7
+        function buildExcelGrid() {
+            const tbody = document.getElementById('excel-grid-body');
+            tbody.innerHTML = '';
+
+            ROWS.forEach(r => {
+                const tr = document.createElement('tr');
+                const th = document.createElement('th');
+                th.textContent = r;
+                th.setAttribute('data-row', r);
+                tr.appendChild(th);
+
+                COLS.forEach(c => {
+                    const cellId = `${c}${r}`;
+                    const td = document.createElement('td');
+                    td.id = `cell-td-${cellId}`;
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.id = `cell-input-${cellId}`;
+                    input.className = 'excel-cell-input';
+                    input.autocomplete = 'off';
+                    input.spellcheck = false;
+
+                    // دعم Ctrl+Click لإضافة الخلية للمعادلة في التمارين (خاصة المبعثرة)
+                    input.addEventListener('mousedown', (e) => {
+                        const formulaBar = document.getElementById('sim-formula-input');
+                        if (e.ctrlKey && formulaBar.value.trim().toUpperCase().startsWith('=AVERAGE(')) {
+                            e.preventDefault();
+                            appendCellToFormula(cellId);
+                            playTone('key');
+                        }
+                    });
+
+                    input.addEventListener('focus', () => selectCell(cellId));
+
+                    input.addEventListener('input', (e) => {
+                        const val = e.target.value;
+                        if (cellId === selectedCell) {
+                            document.getElementById('sim-formula-input').value = val;
+                            highlightCellsFromFormula(val);
+                        }
+                        if (cellId !== exercises[currentExId].targetCell) {
+                            recalculateIfSolved();
+                        }
+                    });
+
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            if (cellId === exercises[currentExId].targetCell) {
+                                confirmFormula();
+                            } else {
+                                input.blur();
+                                selectCell(exercises[currentExId].targetCell);
+                            }
+                        } else if (e.key === 'Escape') {
+                            e.preventDefault();
+                            cancelFormula();
+                        }
+                    });
+
+                    td.appendChild(input);
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        // إضافة خلية عبر Ctrl+Click إلى المعادلة الجارية
+        function appendCellToFormula(cellId) {
+            const formulaBar = document.getElementById('sim-formula-input');
+            let val = formulaBar.value.trim();
+            if (val.endsWith(')')) {
+                val = val.slice(0, -1);
+            }
+            if (val.endsWith('(') || val.endsWith(',')) {
+                val += cellId;
+            } else {
+                val += ',' + cellId;
+            }
+            formulaBar.value = val;
+            document.getElementById(`cell-input-${selectedCell}`).value = val;
+            highlightCellsFromFormula(val);
+            formulaBar.focus();
+        }
+
+        // تحميل تمرين
+        function loadExercise(id) {
+            currentExId = id;
+            const ex = exercises[id];
+            closeAutoSumMenu();
+            playTone('click');
+
+            // تحديث تبويبات التمارين
+            [1, 2, 3, 4].forEach(num => {
+                const btn = document.getElementById(`ex-tab-${num}`);
+                if (num === id) {
+                    btn.className = 'ex-tab-btn px-3 py-2.5 rounded-xl text-xs font-extrabold border-2 border-emerald-400 bg-emerald-500/20 text-white shadow transition flex items-center justify-between gap-2';
+                } else {
+                    btn.className = 'ex-tab-btn px-3 py-2.5 rounded-xl text-xs font-extrabold border border-slate-700 bg-slate-950/70 hover:border-slate-500 text-slate-300 transition flex items-center justify-between gap-2';
+                }
+            });
+
+            document.getElementById('sim-task-title').textContent = ex.title;
+            document.getElementById('sim-task-desc').innerHTML = ex.desc;
+
+            gridFormulas = {};
+            clearRangeHighlight();
+
+            ROWS.forEach(r => {
+                COLS.forEach(c => {
+                    const cellId = `${c}${r}`;
+                    const inp = document.getElementById(`cell-input-${cellId}`);
+                    const td = document.getElementById(`cell-td-${cellId}`);
+                    const val = ex.data[cellId] !== undefined ? ex.data[cellId] : '';
+
+                    inp.value = val;
+                    inp.placeholder = (cellId === ex.targetCell) ? 'الناتج هنا' : '';
+                    td.classList.remove('excel-cell-target-hint', 'excel-cell-error');
+                    if (cellId === ex.targetCell) {
+                        td.classList.add('excel-cell-target-hint');
+                    }
+                });
+            });
+
+            hideFeedback();
+            selectCell(ex.targetCell);
+            document.getElementById('sim-status-text').textContent = `جاهز — الخلية النشطة ${ex.targetCell}`;
+        }
+
+        function resetCurrentExercise() {
+            loadExercise(currentExId);
+        }
+
+        function selectCell(cellId) {
+            selectedCell = cellId;
+            document.getElementById('sim-name-box').textContent = cellId;
+
+            document.querySelectorAll('.excel-cell-selected').forEach(el => el.classList.remove('excel-cell-selected'));
+            document.querySelectorAll('.fill-handle').forEach(el => el.remove());
+            document.querySelectorAll('#excel-grid th').forEach(th => th.classList.remove('col-active', 'row-active'));
+
+            const td = document.getElementById(`cell-td-${cellId}`);
+            if (td) {
+                td.classList.add('excel-cell-selected');
+                const handle = document.createElement('div');
+                handle.className = 'fill-handle';
+                td.appendChild(handle);
+            }
+
+            const col = cellId[0];
+            const row = cellId.slice(1);
+            const colTh = document.querySelector(`#excel-grid th[data-col="${col}"]`);
+            const rowTh = document.querySelector(`#excel-grid th[data-row="${row}"]`);
+            if (colTh) colTh.classList.add('col-active');
+            if (rowTh) rowTh.classList.add('row-active');
+
+            const formulaInput = document.getElementById('sim-formula-input');
+            if (gridFormulas[cellId]) {
+                formulaInput.value = gridFormulas[cellId];
+            } else {
+                const inp = document.getElementById(`cell-input-${cellId}`);
+                formulaInput.value = inp ? inp.value : '';
+            }
+        }
+
+        // تظليل الخلايا تلقائياً عند كتابة معادلة أو مدى في شريط الصيغة
+        function highlightCellsFromFormula(text) {
+            clearRangeHighlight();
+            if (!text || !text.trim().startsWith('=')) return;
+            const upper = text.toUpperCase();
+
+            // البحث عن نطاقات مثل A1:C3
+            const rangeRegex = /([A-F][1-7]):([A-F][1-7])/g;
+            let match;
+            const highlighted = new Set();
+
+            while ((match = rangeRegex.exec(upper)) !== null) {
+                const expanded = expandCellRange(match[1], match[2]);
+                expanded.forEach(c => highlighted.add(c));
+            }
+
+            // البحث عن خلايا منفردة مثل A1, B2
+            const cellRegex = /\b([A-F][1-7])\b/g;
+            while ((match = cellRegex.exec(upper)) !== null) {
+                highlighted.add(match[1]);
+            }
+
+            highlighted.forEach(cid => {
+                if (cid !== selectedCell) {
+                    const td = document.getElementById(`cell-td-${cid}`);
+                    if (td) td.classList.add('excel-cell-range');
+                }
+            });
+        }
+
+        function expandCellRange(startId, endId) {
+            const c1 = COLS.indexOf(startId[0]);
+            const r1 = parseInt(startId.slice(1), 10);
+            const c2 = COLS.indexOf(endId[0]);
+            const r2 = parseInt(endId.slice(1), 10);
+            if (c1 === -1 || c2 === -1) return [];
+
+            const minC = Math.min(c1, c2);
+            const maxC = Math.max(c1, c2);
+            const minR = Math.min(r1, r2);
+            const maxR = Math.max(r1, r2);
+
+            const list = [];
+            for (let r = minR; r <= maxR; r++) {
+                for (let c = minC; c <= maxC; c++) {
+                    list.push(`${COLS[c]}${r}`);
+                }
+            }
+            return list;
+        }
+
+        function clearRangeHighlight() {
+            document.querySelectorAll('.excel-cell-range').forEach(el => el.classList.remove('excel-cell-range'));
+        }
+
+        // قائمة AutoSum ▾ المنسدلة
+        function toggleAutoSumMenu() {
+            playTone('click');
+            document.getElementById('sim-autosum-menu').classList.toggle('hidden');
+        }
+
+        function closeAutoSumMenu() {
+            document.getElementById('sim-autosum-menu').classList.add('hidden');
+        }
+
+        // إغلاق القائمة عند النقر خارجها
+        document.addEventListener('click', (e) => {
+            const wrapper = document.getElementById('autosum-dropdown-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                closeAutoSumMenu();
+            }
+        });
+
+        function applyAutoSumFunction(fnName) {
+            closeAutoSumMenu();
+            const ex = exercises[currentExId];
+            selectCell(ex.targetCell);
+            playTone('click');
+
+            const formulaStr = (ex.type === 'scattered' && fnName === 'AVERAGE')
+                ? '=AVERAGE()'
+                : `=${fnName}(${ex.rangeText})`;
+
+            document.getElementById('sim-formula-input').value = formulaStr;
+            document.getElementById(`cell-input-${ex.targetCell}`).value = formulaStr;
+            document.getElementById(`cell-td-${ex.targetCell}`).classList.remove('excel-cell-error');
+
+            if (ex.type === 'scattered' && fnName === 'AVERAGE') {
+                showFeedback(
+                    'info',
+                    `✨ <strong>تم إدراج <span class="formula-pill">=AVERAGE()</span>!</strong> لأن الخلايا في هذا التمرين مبعثرة (ليست في صف أو عمود واحد)، اكتب الخلايا بين القوسين بفاصلة: <span class="formula-pill">${ex.expectedFormula}</span> (أو اضغط <span class="kbd-inline">Ctrl</span> وانقر على الخلايا A1, B2, C3, D4) ثم اضغط <strong>✓</strong> أو <strong>Enter</strong>.`
+                );
+            } else if (fnName !== 'AVERAGE') {
+                highlightCellsFromFormula(formulaStr);
+                showFeedback(
+                    'warning',
+                    `⚠️ لقد اخترت دالة <span class="formula-pill-blue">${fnName}</span>، لكن المطلوب في هذا الامتحان هو دالة المعدل <span class="formula-pill">Average</span>! افتح قائمة <strong>Σ AutoSum ▾</strong> واختر <strong>Average</strong>.`
+                );
+            } else {
+                highlightCellsFromFormula(formulaStr);
+                document.getElementById('sim-status-text').textContent = 'اضغط علامة الصح ✓ أو Enter للتأكيد';
+                showFeedback(
+                    'info',
+                    `✨ <strong>ممتاز! تم إدراج دالة المعدل التلقائية:</strong> ظهرت المعادلة <span class="formula-pill">${formulaStr}</span> وتظللت خلايا النطاق بإطار متقطع. الآن اضغط على علامة الصح (<strong>✓</strong>) في شريط الصيغة أو مفتاح <strong>Enter</strong> لإظهار الناتج!`
+                );
+            }
+
+            const fInp = document.getElementById('sim-formula-input');
+            fInp.focus();
+            if (formulaStr === '=AVERAGE()') {
+                fInp.setSelectionRange(9, 9); // وضع المؤشر داخل القوسين
+            }
+        }
+
+        // إلغاء العملية (زر ✗)
+        function cancelFormula() {
+            const ex = exercises[currentExId];
+            clearRangeHighlight();
+            playTone('click');
+
+            const td = document.getElementById(`cell-td-${ex.targetCell}`);
+            td.classList.remove('excel-cell-error');
+
+            const targetInp = document.getElementById(`cell-input-${ex.targetCell}`);
+            const formulaInp = document.getElementById('sim-formula-input');
+
+            if (gridFormulas[ex.targetCell]) {
+                targetInp.value = computeAverage(ex.cells);
+                formulaInp.value = gridFormulas[ex.targetCell];
+            } else {
+                targetInp.value = '';
+                formulaInp.value = '';
+            }
+
+            document.getElementById('sim-status-text').textContent = 'تم إلغاء العملية (✗)';
+            showFeedback('info', 'تم الضغط على علامة الخطأ (<strong>✗</strong>) وإلغاء العملية الحسابية كما في برنامج Excel 2013.');
+        }
+
+        // حساب المعدل الحقيقي للخلايا
+        function computeAverage(cellList) {
+            let sum = 0;
+            let count = 0;
+            cellList.forEach(cid => {
+                const raw = document.getElementById(`cell-input-${cid}`).value;
+                const num = parseFloat(raw);
+                if (!isNaN(num)) {
+                    sum += num;
+                    count++;
+                }
+            });
+            if (count === 0) return 0;
+            const avg = sum / count;
+            return Number.isInteger(avg) ? avg : parseFloat(avg.toFixed(2));
+        }
+
+        function recalculateIfSolved() {
+            const ex = exercises[currentExId];
+            if (gridFormulas[ex.targetCell]) {
+                const avg = computeAverage(ex.cells);
+                document.getElementById(`cell-input-${ex.targetCell}`).value = avg;
+                document.getElementById('sim-status-text').textContent = `تم تحديث المعدل تلقائياً = ${avg}`;
+            }
+        }
+
+        // نظام التصحيح الذكي والفوري (Smart Validator)
+        function confirmFormula() {
+            const ex = exercises[currentExId];
+            const raw = document.getElementById('sim-formula-input').value.trim();
+            const targetTd = document.getElementById(`cell-td-${ex.targetCell}`);
+            targetTd.classList.remove('excel-cell-error');
+            clearRangeHighlight();
+
+            // 1. فحص الوقوف في خلية غير الخلية المطلوبة للناتج
+            if (selectedCell !== ex.targetCell) {
+                playTone('error');
+                showFeedback(
+                    'error',
+                    `⚠️ <strong>تنبيه موقع الخلية النشطة:</strong> أنت واقف حالياً على الخلية <span class="formula-pill-red">${selectedCell}</span>! المطلوب في هذا التمرين إظهار الناتج في الخلية <span class="formula-pill">${ex.targetCell}</span>. انقر على <span class="formula-pill">${ex.targetCell}</span> أولاً ثم أعد المحاولة.`
+                );
+                return;
+            }
+
+            if (!raw) {
+                playTone('error');
+                showFeedback('error', `⚠️ شريط الصيغة فارغ! اكتب <span class="formula-pill">${ex.expectedFormula}</span> أو اختر <strong>Average</strong> من قائمة <strong>Σ AutoSum ▾</strong> أو استخدم زر <strong>fx</strong>.`);
+                return;
+            }
+
+            // 2. فحص الأحرف العربية
+            if (/[\u0600-\u06FF]/.test(raw)) {
+                playTone('error');
+                showFeedback(
+                    'error',
+                    `❌ <strong>الكيبورد باللغة العربية!</strong> اضغط <span class="kbd-inline">Alt + Shift</span> لتحويل اللغة إلى الإنجليزية (<span class="ltr-inline font-mono">EN</span>) ثم اكتب <span class="formula-pill">${ex.expectedFormula}</span>.`
+                );
+                return;
+            }
+
+            // 3. فحص نسيان علامة =
+            if (!raw.startsWith('=')) {
+                playTone('error');
+                showFeedback(
+                    'error',
+                    `❌ <strong>نسيت علامة اليساوي (=) في البداية!</strong> بدون <span class="formula-pill">=</span> سيعتبر Excel ما كتبته مجرد نص عادي ولن يحسب المعدل. الصيغة الصحيحة تبدأ بـ: <span class="formula-pill">${ex.expectedFormula}</span>.`
+                );
+                return;
+            }
+
+            const normalized = raw.replace(/\s+/g, '').toUpperCase();
+
+            // 4. فحص الخطأ الإملائي الشائع (AVARGE, AVRAGE, AVERGE, AVREGE, ...) -> يعرض #NAME?
+            const fnMatch = normalized.match(/^=([A-Z]+)\(/);
+            if (fnMatch) {
+                const typedFn = fnMatch[1];
+                if (typedFn !== 'AVERAGE') {
+                    // التحقق إن كان خطأً إملائياً محتملاً لكلمة AVERAGE
+                    if (['AVARGE', 'AVRAGE', 'AVERGE', 'AVREGE', 'AVARAGE', 'AVEARGE', 'AVRG', 'AVG', 'AVRAG'].includes(typedFn) || typedFn.startsWith('AV')) {
+                        playTone('error');
+                        document.getElementById(`cell-input-${ex.targetCell}`).value = '#NAME?';
+                        targetTd.classList.add('excel-cell-error');
+                        showFeedback(
+                            'error',
+                            `❌ <strong>خطأ إملائي (<span class="formula-pill-red">#NAME?</span>)!</strong> كتبت <span class="formula-pill-red">${typedFn}</span> بدل الاسم الصحيح <span class="formula-pill">AVERAGE</span>! تذكّر التقسيم السهل: <strong>AVE - RAGE</strong>.`
+                        );
+                        return;
+                    }
+                    // إذا اختار دالة أخرى مثل SUM أو MAX
+                    if (['SUM', 'COUNT', 'MAX', 'MIN'].includes(typedFn)) {
+                        playTone('error');
+                        showFeedback(
+                            'warning',
+                            `⚠️ لقد استخدمت دالة <span class="formula-pill-blue">${typedFn}</span>، لكن المطلوب في الامتحان هو دالة المعدل <span class="formula-pill">AVERAGE</span>! استبدلها بـ <span class="formula-pill">${ex.expectedFormula}</span>.`
+                        );
+                        return;
+                    }
+                    playTone('error');
+                    document.getElementById(`cell-input-${ex.targetCell}`).value = '#NAME?';
+                    targetTd.classList.add('excel-cell-error');
+                    showFeedback(
+                        'error',
+                        `❌ اسم الدالة <span class="formula-pill-red">${typedFn}</span> غير صحيح (أعطى <span class="formula-pill-red">#NAME?</span>). الاسم الصحيح لدالة المعدل هو <span class="formula-pill">AVERAGE</span>.`
+                    );
+                    return;
+                }
+            } else {
+                // قد يكون كتب أرقاماً مباشرة مثل =(10+20+30)/3 أو نسي فتح القوس
+                if (/^=[\d+\-*/(),.;]+$/.test(normalized)) {
+                    playTone('error');
+                    showFeedback(
+                        'error',
+                        `❌ <strong>تذكّر القاعدة الذهبية!</strong> برنامج Excel 2013 لا يتعامل مع الأرقام المباشرة في الامتحان، بل يجب استخدام <strong>دالة AVERAGE وأسماء الخلايا</strong> مثل: <span class="formula-pill">${ex.expectedFormula}</span>.`
+                    );
+                    return;
+                }
+                if (normalized.startsWith('=AVERAGE') && !normalized.includes('(')) {
+                    playTone('error');
+                    showFeedback(
+                        'error',
+                        `❌ <strong>نسيت الأقواس!</strong> بعد كتابة <span class="formula-pill">=AVERAGE</span> يجب فتح القوس عبر <span class="kbd-inline">Shift + 9</span> وإغلاقه عبر <span class="kbd-inline">Shift + 0</span>.`
+                    );
+                    return;
+                }
+            }
+
+            // 5. فحص إغلاق القوس
+            if (!normalized.endsWith(')')) {
+                playTone('error');
+                showFeedback(
+                    'error',
+                    `❌ <strong>نسيت إغلاق القوس ) في نهاية المعادلة!</strong> اضغط <span class="kbd-inline">Shift + 0</span> لإغلاق القوس: <span class="formula-pill">${ex.expectedFormula}</span>.`
+                );
+                return;
+            }
+
+            const innerMatch = normalized.match(/^=AVERAGE\((.*)\)$/);
+            if (!innerMatch || !innerMatch[1]) {
+                playTone('error');
+                showFeedback('error', `❌ ما بين القوسين فارغ! يجب كتابة أسماء الخلايا المطلوبة مثل: <span class="formula-pill">${ex.expectedFormula}</span>.`);
+                return;
+            }
+
+            const inside = innerMatch[1];
+
+            // 6. فحص الأرقام المباشرة داخل القوسين مثل =AVERAGE(10,20,30,40,50)
+            if (/^[\d.,;]+$/.test(inside)) {
+                playTone('error');
+                showFeedback(
+                    'error',
+                    `❌ <strong>تذكّر القاعدة الذهبية!</strong> كتبت الأرقام مباشرة داخل القوسين (<span class="formula-pill-red">${inside}</span>). في امتحان Excel يجب كتابة <strong>أسماء الخلايا</strong> وليس الأرقام، أي: <span class="formula-pill">${ex.expectedFormula}</span>.`
+                );
+                return;
+            }
+
+            // 7. التحقق من الخلايا داخل القوسين حسب نوع التمرين
+            let isCorrect = false;
+
+            if (ex.type === 'scattered') {
+                // تنبيه خاص إذا كتب الطالب صيغة النقطتين من الملزمة A1:B2:C3:D4
+                if (inside.includes(':')) {
+                    playTone('error');
+                    showFeedback(
+                        'warning',
+                        `📌 <strong>ملاحظة ذكية للمختبر!</strong> كتبت <span class="formula-pill-blue">${inside}</span> بعلامة النقطتين (كما في الشرح النظري بالملزمة)، ولكن في <strong>التطبيق العملي على حاسبة Excel 2013</strong> نستخدم <strong>الفاصلة (,)</strong> للفصل بين الخلايا المبعثرة (مفتاح حرف <strong>و</strong> بالإنجليزي). جرّب الآن كتابة: <span class="formula-pill">=AVERAGE(A1,B2,C3,D4)</span>!`
+                    );
+                    return;
+                }
+
+                // قبول الفاصلة (,) أو الفاصلة المنقوطة (;) بأي ترتيب لنفس الخلايا الـ 4
+                const parts = inside.split(/[,;]/).filter(Boolean);
+                const uniqueSorted = [...new Set(parts)].sort().join(',');
+                const expectedSorted = [...ex.cells].sort().join(',');
+                if (parts.length === ex.cells.length && uniqueSorted === expectedSorted) {
+                    isCorrect = true;
+                }
+            } else {
+                // التمارين المتصلة (عمودي، أفقي، مصفوفة)
+                const [startC, endC] = ex.rangeText.split(':');
+                const reverseRange = `${endC}:${startC}`;
+
+                if (inside === ex.rangeText || inside === reverseRange) {
+                    isCorrect = true;
+                } else if (inside.includes(';') && !inside.includes(':') && inside.split(';').length === 2) {
+                    playTone('error');
+                    showFeedback(
+                        'error',
+                        `❌ كتبت فاصلة منقوطة <span class="formula-pill-red">;</span> بدل النقطتين <span class="formula-pill">:</span>! لكتابة النقطتين (إلى) اضغط <span class="kbd-inline">Shift</span> مع مفتاح حرف <strong>ك</strong>.`
+                    );
+                    return;
+                } else {
+                    // السماح أيضاً إذا كتب كل خلايا النطاق مفصولة بفواصل بشكل صحيح تماماً
+                    const parts = inside.split(/[,;]/).filter(Boolean);
+                    const uniqueSorted = [...new Set(parts)].sort().join(',');
+                    const expectedSorted = [...ex.cells].sort().join(',');
+                    if (parts.length === ex.cells.length && uniqueSorted === expectedSorted) {
+                        isCorrect = true;
+                    }
+                }
+            }
+
+            if (isCorrect) {
+                const avgVal = computeAverage(ex.cells);
+                const cleanFormula = `=AVERAGE(${inside})`;
+                gridFormulas[ex.targetCell] = cleanFormula;
+                document.getElementById(`cell-input-${ex.targetCell}`).value = avgVal;
+                document.getElementById('sim-formula-input').value = cleanFormula;
+                document.getElementById('sim-status-text').textContent = `✓ إجابة صحيحة! المعدل = ${avgVal}`;
+
+                markExerciseSolved(ex.id);
+                playTone('success');
+
+                showFeedback(
+                    'success',
+                    `🎉 <strong>أحسنت! إجابة صحيحة 100%</strong> — تم تنفيذ المعادلة <span class="formula-pill">${cleanFormula}</span> بنجاح، وحُسب المعدل بدقة: <strong class="text-lg text-emerald-300">${avgVal}</strong> في الخلية النشطة <span class="formula-pill">${ex.targetCell}</span>. (جرب تغيير أي رقم في الجدول لترى تحديث المعدل تلقائياً!)`
+                );
+            } else {
+                playTone('error');
+                showFeedback(
+                    'error',
+                    `❌ النطاق أو الخلايا داخل القوسين (<span class="formula-pill-red">${inside}</span>) غير مطابقة للمطلوب في هذا التمرين. تأكد من أسماء الخلايا الصحيحة: <span class="formula-pill">${ex.expectedFormula}</span>.`
+                );
+            }
+        }
+
+        // تحديث شارة "تم الحل ✓" وعداد الإنجاز (X / 4)
+        function markExerciseSolved(id) {
+            solvedExercises.add(id);
+            const badge = document.getElementById(`ex-badge-${id}`);
+            if (badge) {
+                badge.textContent = 'تم الحل ✓';
+                badge.className = 'text-[10px] px-2 py-0.5 rounded bg-emerald-500 text-slate-950 font-black';
+            }
+
+            const count = solvedExercises.size;
+            document.getElementById('sim-progress-counter').textContent = `${count} / 4`;
+            document.getElementById('sim-progress-bar').style.width = `${(count / 4) * 100}%`;
+        }
+
+        // زر "عرض الحل"
+        function showSolution() {
+            const ex = exercises[currentExId];
+            selectCell(ex.targetCell);
+            playTone('click');
+            document.getElementById('sim-formula-input').value = ex.expectedFormula;
+            document.getElementById(`cell-input-${ex.targetCell}`).value = ex.expectedFormula;
+            highlightCellsFromFormula(ex.expectedFormula);
+
+            showFeedback(
+                'info',
+                `💡 <strong>الحل النموذجي للتمرين ${ex.id}:</strong> تم وضع المعادلة الصحيحة <span class="formula-pill">${ex.expectedFormula}</span> في الخلية <span class="formula-pill">${ex.targetCell}</span>. الآن اضغط على علامة الصح (<strong>✓</strong>) أو مفتاح <strong>Enter</strong> لتنفيذها وإظهار الناتج (${ex.expectedResult})!`
+            );
+            document.getElementById('sim-formula-input').focus();
+        }
+
+        function showFeedback(type, html) {
+            const box = document.getElementById('sim-feedback');
+            box.className = 'rounded-2xl p-4 border-2 text-sm font-bold leading-relaxed transition-all animate-pop';
+
+            if (type === 'success') {
+                box.classList.add('bg-emerald-500/15', 'border-emerald-500/50', 'text-emerald-100');
+            } else if (type === 'error') {
+                box.classList.add('bg-rose-500/15', 'border-rose-500/50', 'text-rose-100');
+            } else if (type === 'warning') {
+                box.classList.add('bg-amber-500/15', 'border-amber-500/50', 'text-amber-100');
+            } else {
+                box.classList.add('bg-sky-500/15', 'border-sky-500/50', 'text-sky-100');
+            }
+            box.innerHTML = html;
+        }
+
+        function hideFeedback() {
+            document.getElementById('sim-feedback').classList.add('hidden');
+        }
+
+        // ربط شريط الصيغة بالخلية النشطة ومفاتيح الاختصار
+        const simFormulaBar = document.getElementById('sim-formula-input');
+        simFormulaBar.addEventListener('input', (e) => {
+            const val = e.target.value;
+            const cellInp = document.getElementById(`cell-input-${selectedCell}`);
+            if (cellInp) cellInp.value = val;
+            highlightCellsFromFormula(val);
+            if (selectedCell !== exercises[currentExId].targetCell) {
+                recalculateIfSolved();
+            }
+        });
+        simFormulaBar.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                confirmFormula();
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                cancelFormula();
+            } else if (e.key === 'Tab') {
+                // دعم الإكمال التلقائي بزر Tab إذا كتب =AV!
+                const upper = simFormulaBar.value.trim().toUpperCase();
+                if (upper === '=A' || upper === '=AV' || upper === '=AVE' || upper === '=AVER' || upper === '=AVERA' || upper === '=AVERAG') {
+                    e.preventDefault();
+                    playTone('key');
+                    simFormulaBar.value = '=AVERAGE(';
+                    document.getElementById(`cell-input-${selectedCell}`).value = '=AVERAGE(';
+                }
+            }
+        });
+
+
+        /* =========================================================================
+           4. نافذة fx Insert Function ثم Function Arguments الحقيقية
+           ========================================================================= */
+        const fxCatalog = {
+            recent: [
+                { name: 'AVERAGE', sig: 'AVERAGE(number1, [number2], ...)', desc: 'Returns the average (arithmetic mean) of its arguments, which can be numbers or names, arrays, or references that contain numbers.' },
+                { name: 'SUM', sig: 'SUM(number1, [number2], ...)', desc: 'Adds all the numbers in a range of cells.' },
+                { name: 'IF', sig: 'IF(logical_test, [value_if_true], [value_if_false])', desc: 'Checks whether a condition is met, and returns one value if TRUE, and another value if FALSE.' },
+                { name: 'COUNT', sig: 'COUNT(value1, [value2], ...)', desc: 'Counts the number of cells in a range that contain numbers.' },
+                { name: 'MAX', sig: 'MAX(number1, [number2], ...)', desc: 'Returns the largest value in a set of values.' }
+            ],
+            statistical: [
+                { name: 'AVERAGE', sig: 'AVERAGE(number1, [number2], ...)', desc: 'Returns the average (arithmetic mean) of its arguments.' },
+                { name: 'COUNT', sig: 'COUNT(value1, [value2], ...)', desc: 'Counts the number of cells in a range that contain numbers.' },
+                { name: 'MAX', sig: 'MAX(number1, [number2], ...)', desc: 'Returns the largest value in a set of values.' },
+                { name: 'MIN', sig: 'MIN(number1, [number2], ...)', desc: 'Returns the smallest number in a set of values.' }
+            ],
+            all: [
+                { name: 'ABS', sig: 'ABS(number)', desc: 'Returns the absolute value of a number.' },
+                { name: 'AVERAGE', sig: 'AVERAGE(number1, [number2], ...)', desc: 'Returns the average (arithmetic mean) of its arguments.' },
+                { name: 'COUNT', sig: 'COUNT(value1, [value2], ...)', desc: 'Counts the number of cells in a range that contain numbers.' },
+                { name: 'MAX', sig: 'MAX(number1, [number2], ...)', desc: 'Returns the largest value in a set of values.' },
+                { name: 'MIN', sig: 'MIN(number1, [number2], ...)', desc: 'Returns the smallest number in a set of values.' },
+                { name: 'SUM', sig: 'SUM(number1, [number2], ...)', desc: 'Adds all the numbers in a range of cells.' }
+            ]
+        };
+
+        let selectedFxFn = 'AVERAGE';
+
+        function openFxModalFromGuide() {
+            setTimeout(() => openFxModal(), 450);
+        }
+
+        function openFxModal() {
+            const ex = exercises[currentExId];
+            selectCell(ex.targetCell);
+            closeAutoSumMenu();
+            playTone('click');
+
+            selectedFxFn = 'AVERAGE';
+            document.getElementById('fx-category-select').value = 'recent';
+            updateFxFunctionList();
+
+            document.getElementById('fx-dialog-step1').classList.remove('hidden');
+            document.getElementById('fx-dialog-step2').classList.add('hidden');
+            document.getElementById('fx-modal-backdrop').classList.remove('hidden');
+        }
+
+        function closeFxModal() {
+            playTone('click');
+            document.getElementById('fx-modal-backdrop').classList.add('hidden');
+        }
+
+        function updateFxFunctionList() {
+            const cat = document.getElementById('fx-category-select').value;
+            const list = fxCatalog[cat] || fxCatalog.recent;
+            const container = document.getElementById('fx-function-list');
+            container.innerHTML = '';
+
+            // التأكد من وجود الدالة المختارة في القائمة الحالية
+            if (!list.some(f => f.name === selectedFxFn)) {
+                selectedFxFn = list[0].name;
+            }
+
+            list.forEach(item => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => {
+                    selectedFxFn = item.name;
+                    playTone('key');
+                    updateFxFunctionList();
+                };
+                btn.ondblclick = () => {
+                    selectedFxFn = item.name;
+                    goToFxStep2();
+                };
+                const isActive = item.name === selectedFxFn;
+                btn.className = isActive
+                    ? 'w-full text-left px-3 py-2 text-xs font-black bg-sky-500 text-slate-950'
+                    : 'w-full text-left px-3 py-2 text-xs font-bold text-slate-300 hover:bg-slate-800';
+                btn.textContent = item.name;
+                container.appendChild(btn);
+
+                if (isActive) {
+                    document.getElementById('fx-selected-signature').textContent = item.sig;
+                    document.getElementById('fx-selected-desc').textContent = item.desc;
+                }
+            });
+        }
+
+        function goToFxStep2() {
+            playTone('click');
+            const ex = exercises[currentExId];
+            document.getElementById('fx-dialog-step1').classList.add('hidden');
+            document.getElementById('fx-dialog-step2').classList.remove('hidden');
+            document.getElementById('fx-arg-fn-name').textContent = selectedFxFn;
+
+            const num1Input = document.getElementById('fx-arg-num1');
+            const num2Input = document.getElementById('fx-arg-num2');
+            // نترك الحقل جاهزاً ليكتب الطالب المدى أو نضع Placeholder إرشادي واضح
+            num1Input.value = '';
+            num1Input.placeholder = `اكتب المدى هنا مثل: ${ex.rangeText}`;
+            num2Input.value = '';
+            updateFxArgPreview();
+            num1Input.focus();
+        }
+
+        function backToFxStep1() {
+            playTone('click');
+            document.getElementById('fx-dialog-step2').classList.add('hidden');
+            document.getElementById('fx-dialog-step1').classList.remove('hidden');
+        }
+
+        function updateFxArgPreview() {
+            const n1 = document.getElementById('fx-arg-num1').value.trim();
+            const n2 = document.getElementById('fx-arg-num2').value.trim();
+            const args = [n1, n2].filter(Boolean).join(',');
+            const preview = `=${selectedFxFn}(${args})`;
+            document.getElementById('fx-arg-formula-preview').textContent = preview;
+        }
+
+        function applyFxArguments() {
+            const n1 = document.getElementById('fx-arg-num1').value.trim();
+            const n2 = document.getElementById('fx-arg-num2').value.trim();
+            const args = [n1, n2].filter(Boolean).join(',');
+            const finalFormula = `=${selectedFxFn}(${args})`;
+
+            document.getElementById('fx-modal-backdrop').classList.add('hidden');
+
+            const ex = exercises[currentExId];
+            selectCell(ex.targetCell);
+            document.getElementById('sim-formula-input').value = finalFormula;
+            document.getElementById(`cell-input-${ex.targetCell}`).value = finalFormula;
+
+            // التحقق والتنفيذ مباشرة عند الضغط على OK
+            confirmFormula();
+        }
+
+        // السماح بالضغط على Enter داخل نافذة Function Arguments
+        document.getElementById('fx-arg-num1').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                applyFxArguments();
+            }
+        });
+        document.getElementById('fx-arg-num2').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                applyFxArguments();
+            }
+        });
+
+
+        /* =========================================================================
+           5. قسم الأسئلة والأجوبة النموذجية (Accordion Q&A)
+           ========================================================================= */
+        let qaAllOpen = false;
+
+        function toggleQA(bodyId, headerBtn) {
+            playTone('click');
+            const body = document.getElementById(bodyId);
+            const arrow = headerBtn.querySelector('.qa-arrow');
+            const isHidden = body.classList.contains('hidden');
+
+            if (isHidden) {
+                body.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                body.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function toggleAllQA() {
+            playTone('click');
+            qaAllOpen = !qaAllOpen;
+            const ids = ['qa-1', 'qa-2', 'qa-3', 'qa-4', 'qa-5'];
+            const arrows = document.querySelectorAll('.qa-arrow');
+            const masterBtn = document.getElementById('qa-toggle-all-btn');
+
+            ids.forEach((id, idx) => {
+                const body = document.getElementById(id);
+                if (qaAllOpen) {
+                    body.classList.remove('hidden');
+                    if (arrows[idx]) arrows[idx].style.transform = 'rotate(180deg)';
+                } else {
+                    body.classList.add('hidden');
+                    if (arrows[idx]) arrows[idx].style.transform = 'rotate(0deg)';
+                }
+            });
+
+            masterBtn.textContent = qaAllOpen ? '🙈 إغلاق الكل' : '👁️ فتح الكل';
+        }
+
+        // تهيئة التطبيق عند اكتمال تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            renderKbStepButtons();
+            setKbStep(0);
+            buildExcelGrid();
+            loadExercise(1);
+        });
+    </script>
+</body>
+</html>
